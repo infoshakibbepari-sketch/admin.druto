@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14183A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>DRUTO Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F3F4FA;--card:#fff;--ink:#1D2250;--mut:#6B7094;--line:#E4E6F2;--pri:#2B3590;--pri-t:#fff;--acc:#F5B700;--ok:#1E9E6A;--bad:#D64550;--wait:#B87400;--chip:#E9EBF8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1230;--card:#181C45;--ink:#EEF0FF;--mut:#9A9FCB;--line:#262B5E;--pri:#F5B700;--pri-t:#1D2250;--chip:#232855;--ok:#4FD4A0;--bad:#FF7B84;--wait:#FFC24D}}
+:root[data-theme="dark"]{--bg:#0F1230;--card:#181C45;--ink:#EEF0FF;--mut:#9A9FCB;--line:#262B5E;--pri:#F5B700;--pri-t:#1D2250;--chip:#232855;--ok:#4FD4A0;--bad:#FF7B84;--wait:#FFC24D}
+*{box-sizing:border-box;margin:0}
+body,body *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,select,[contenteditable]{-webkit-user-select:text;user-select:text}
+img{-webkit-user-drag:none;user-drag:none}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:Manrope,system-ui,sans-serif;font-size:14.5px;line-height:1.45}
+#app{max-width:430px;height:100%;margin:0 auto;display:flex;flex-direction:column;position:relative;background:var(--bg)}
+header{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:8px}
+.lg{width:48px;height:34px;flex:none}
+.bn2{display:flex;flex-direction:column;line-height:1}
+.bn2 b{font-size:22px;font-style:italic;font-weight:800;letter-spacing:.5px}
+.bn2 small{font-size:7.4px;font-weight:800;color:#F7931E;letter-spacing:.5px;margin-top:3px}
+.logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;box-shadow:0 4px 12px rgba(43,53,144,.35)}
+.logo svg{width:100%;height:100%;display:block;border-radius:12px}
+.bell{position:relative;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--bg);color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.bell svg{width:21px;height:21px}
+.bell i{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:var(--bad);color:#fff;font:700 11px/18px Manrope;text-align:center;font-style:normal}
+main{flex:1;overflow-y:auto;padding:16px 16px 24px}
+h1{font-size:21px;font-weight:800;margin-bottom:12px}
+h2{font-size:15.5px;font-weight:700;margin:18px 0 10px;display:flex;justify-content:space-between;align-items:baseline}
+h2 a{font-size:13px;color:var(--pri);font-weight:600;cursor:pointer}
+.mut{color:var(--mut);font-size:13px}
+.btn{border:0;border-radius:14px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer;background:var(--acc);color:#1D2250}
+.btn.line{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn.pri{background:var(--pri);color:var(--pri-t)}
+.btn.full{width:100%;padding:14px}
+:is(.btn,.tab,.chip,.ord,input,select,.bell,.cc,.q button,.lk):focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px}
+.live{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ok);font-weight:700}
+.live::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok);animation:pl 1.6s infinite}
+@keyframes pl{50%{opacity:.25}}
+.big{font-size:28px;font-weight:800;letter-spacing:-.5px}
+.up{color:var(--ok);font-weight:700;font-size:13px}.dn{color:var(--bad);font-weight:700;font-size:13px}
+.rng{display:flex;gap:6px}
+.chip{border:0;background:var(--chip);color:var(--ink);padding:6px 13px;border-radius:20px;font:inherit;font-size:13px;font-weight:600;white-space:nowrap;cursor:pointer}
+.chip.on{background:var(--pri);color:var(--pri-t)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin:10px 0 4px}
+svg.ch{width:100%;height:auto;display:block;margin-top:8px;touch-action:manipulation}
+.ln.s{animation:none;stroke-dashoffset:0}
+.ln{fill:none;stroke:var(--pri);stroke-width:3;stroke-linejoin:round;stroke-linecap:round;stroke-dasharray:1200;stroke-dashoffset:1200;animation:dw 1.1s ease forwards}
+@keyframes dw{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.ln{animation:none;stroke-dashoffset:0}.live::before{animation:none}}
+.q{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:14px 0}
+.q button{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:11px 2px;font:inherit;font-size:11.5px;font-weight:600;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px}
+.q svg{width:23px;height:23px}
+.q .pt{background:var(--acc);color:#1D2250;border-color:var(--acc)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{padding:12px}.stat b{font-size:21px;display:block}.stat span{font-size:12px;color:var(--mut)}
+.slider{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:2px 2px 10px;margin:0 -16px;padding-inline:16px;scroll-padding-inline:16px}
+.cc{flex:0 0 72%;scroll-snap-align:start;text-align:left;font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;cursor:pointer}
+.av{width:42px;height:42px;border-radius:50%;background:var(--acc);color:#1D2250;display:grid;place-items:center;font-weight:800;flex:none}
+.cc .r{display:flex;gap:10px;align-items:center;margin-bottom:10px}
+.cc b{display:block}
+.ord{width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px;margin-bottom:10px;display:flex;gap:12px;align-items:center;font:inherit;color:inherit;cursor:pointer}
+.ord .ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--chip)}
+.ord .m{flex:1;min-width:0}.ord .m b,.ord .rr b{display:block}.ord .m span{font-size:12.5px;color:var(--mut)}.ord .rr{text-align:right}
+.tag{font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:20px;display:inline-block}
+.t-ok{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}
+.t-bad{background:color-mix(in srgb,var(--bad) 18%,transparent);color:var(--bad)}
+.t-wait{background:color-mix(in srgb,var(--wait) 20%,transparent);color:var(--wait)}
+.t-way{background:var(--chip);color:var(--pri)}
+label{display:block;font-size:12.5px;color:var(--mut);margin:12px 0 5px;font-weight:600}
+input,select{width:100%;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.srch{display:flex;gap:8px}.srch .btn{padding:0 14px;display:grid;place-items:center}.srch svg{width:20px;height:20px}
+.err{color:var(--bad);font-size:13px;min-height:18px;margin-top:8px}
+.lk{background:none;border:0;color:var(--pri);font:inherit;font-weight:700;cursor:pointer;padding:6px 0}
+.calc{background:var(--card);border:1px dashed var(--mut);border-radius:16px;padding:14px;margin:16px 0}
+.calc div{display:flex;justify-content:space-between;padding:3px 0}
+.calc .tot{border-top:1px solid var(--line);margin-top:6px;padding-top:8px;font-weight:800;font-size:16px}
+.tx{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.tx:last-child{border:0}.tx span{color:var(--mut);font-size:12.5px;display:block}
+.plus{color:var(--ok);font-weight:700}.minus{color:var(--bad);font-weight:700}
+.pf{padding:2px 14px}
+input[type=checkbox]{width:44px;height:24px;accent-color:var(--pri)}
+nav{display:grid;grid-template-columns:repeat(5,1fr);background:var(--card);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+.tab{background:none;border:0;font:inherit;font-size:11px;font-weight:600;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px;cursor:pointer;border-radius:12px}
+.tab svg{width:22px;height:22px}.tab.on{color:var(--pri);font-weight:800}
+.fab{width:50px;height:50px;border-radius:50%;background:var(--acc);color:#1D2250;display:grid;place-items:center;box-shadow:0 6px 16px rgba(245,183,0,.45);transform:translateY(-14px)}
+.tab.add{padding-top:0}.tab.add span{margin-top:-10px}
+.bg{position:absolute;inset:0;background:rgba(10,12,40,.55);display:none;z-index:5}
+.bg.show{display:flex}.bg.s{align-items:flex-end}.bg.p{align-items:center;justify-content:center;padding:24px}
+.sheet{background:var(--card);width:100%;border-radius:24px 24px 0 0;padding:18px 18px 28px;max-height:88%;overflow-y:auto;animation:up .25s ease}
+.pop{background:var(--card);width:100%;border-radius:24px;padding:22px;text-align:center;animation:up .25s ease}
+@keyframes up{from{transform:translateY(30px);opacity:0}}
+.st{font-size:18px;font-weight:800;display:block;margin-bottom:4px}
+.gem{width:64px;height:64px;border-radius:20px;background:var(--acc);color:#1D2250;display:grid;place-items:center;margin:0 auto 12px}
+.gem svg{width:32px;height:32px}
+.tl{margin:14px 0 4px;padding-left:4px}
+.tl div{position:relative;padding:0 0 16px 24px;border-left:2px solid var(--line);margin-left:6px}
+.tl div::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--line)}
+.tl div.d{border-color:var(--ok)}.tl div.d::before{background:var(--ok)}
+.tl div.c::before{background:var(--acc);box-shadow:0 0 0 4px color-mix(in srgb,var(--acc) 30%,transparent)}
+.tl span{display:block;font-size:12.5px;color:var(--mut)}
+.toast{position:absolute;left:16px;right:16px;bottom:90px;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;z-index:9;display:none;text-align:center;font-weight:600}
+.pts{background:var(--pri);color:var(--pri-t);border-radius:22px;padding:18px;text-align:center}
+.pts .big{font-size:40px}.pbar{height:8px;border-radius:8px;background:rgba(127,127,127,.3);margin:12px 0 6px;overflow:hidden}.pbar i{display:block;height:100%;background:var(--acc)}
+.gate{text-align:center;padding:48px 12px}
+.gate .gem{background:var(--chip);color:var(--pri)}
+.back{background:none;border:0;color:var(--ink);font:inherit;font-weight:700;display:flex;align-items:center;gap:4px;cursor:pointer;margin-bottom:10px;padding:0}
+.back svg{width:20px;height:20px}
+.posters{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -16px;padding:2px 16px 12px;scroll-padding-inline:16px}
+.po{flex:0 0 84%;aspect-ratio:16/10;scroll-snap-align:start;border:0;border-radius:24px;padding:18px;color:#fff;text-align:left;font:inherit;position:relative;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end;gap:4px}
+.po small{font-weight:700;letter-spacing:1.5px;font-size:11px;opacity:.85}
+.po b{font-size:22px;line-height:1.15;font-weight:800;max-width:75%}
+.po em{font-style:normal;font-weight:700;font-size:13px;background:rgba(255,255,255,.22);align-self:flex-start;padding:6px 12px;border-radius:20px;margin-top:8px}
+.po .wm{position:absolute;right:-16px;top:-12px;width:160px;height:160px;opacity:.18}
+.po .wm svg{width:100%;height:100%;stroke-width:1.2}
+.po::before{content:"";position:absolute;width:190px;height:190px;border-radius:50%;background:rgba(255,255,255,.1);right:-60px;bottom:-70px}
+.p1{background:linear-gradient(135deg,#2B3590,#5A3FD1)}
+.p2{background:linear-gradient(135deg,#F5B700,#FF8A3D);color:#1D2250}.p2 em{background:rgba(29,34,80,.14)}
+.p3{background:linear-gradient(135deg,#0F766E,#22A06B)}
+.p4{background:linear-gradient(135deg,#7A1F5C,#C2335E)}
+.bn{flex:0 0 92%;scroll-snap-align:start;border:0;border-radius:24px;padding:18px 0 18px 18px;color:#fff;text-align:left;font:inherit;position:relative;overflow:hidden;cursor:pointer;min-height:184px;display:block}
+.bn .bt{max-width:56%;position:relative;z-index:1}
+.bn b{display:block;font-size:20px;font-weight:800;line-height:1.15;margin-bottom:6px}
+.bn p{font-size:13px;opacity:.92;margin:0 0 14px}
+.bn .cta{display:inline-block;background:#fff;color:var(--c);padding:9px 16px;border-radius:12px;font-weight:700;font-size:13px}
+.bn svg.il{position:absolute;right:-4px;bottom:0;width:50%;height:auto}
+.bn::before{content:"";position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.1);right:-70px;top:-60px}
+.b1{--c:#2B3590;background:linear-gradient(135deg,#2B3590,#4C56D6)}
+.b2{--c:#0F766E;background:linear-gradient(135deg,#0F766E,#22A06B)}
+.b3{--c:#1D2250;color:#1D2250;background:linear-gradient(135deg,#F5B700,#FF9A4D)}
+.hero{background:linear-gradient(135deg,#1D2250,#2B3590 60%,#5A3FD1);color:#fff;border-radius:26px;padding:22px 0 0 20px;position:relative;overflow:hidden;min-height:260px}
+.hero::before{content:"";position:absolute;width:240px;height:240px;border-radius:50%;background:rgba(245,183,0,.18);right:-80px;top:-80px}
+.hero small{letter-spacing:2px;font-weight:700;font-size:11px;color:#F5B700;position:relative}
+.hero h1{font-size:28px;line-height:1.1;margin:8px 0;max-width:60%;position:relative}
+.hero p{font-size:13.5px;opacity:.9;max-width:56%;margin:0 0 16px;position:relative}
+.hero .il{position:absolute;right:-8px;bottom:0;width:48%;height:auto}
+.hero .btn{margin-bottom:22px;position:relative;z-index:1}
+.svc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.svc div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px}
+.svc i{width:40px;height:40px;border-radius:12px;background:var(--chip);color:var(--pri);display:grid;place-items:center;margin-bottom:8px}
+.svc i svg{width:22px;height:22px}.svc b{display:block}.svc span{font-size:12.5px;color:var(--mut)}
+.stp{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.stp:last-child{border:0}
+.stp i{flex:none;width:30px;height:30px;border-radius:50%;background:var(--acc);color:#1D2250;font:800 14px/30px Manrope,sans-serif;text-align:center;font-style:normal}
+.stp i svg{width:16px;height:16px;margin-top:7px}
+.stp span{display:block;font-size:12.5px;color:var(--mut)}
+.zones{display:flex;flex-wrap:wrap;gap:8px}
+.band{margin-top:20px;background:var(--acc);color:#1D2250;border-radius:22px;padding:20px;text-align:center}
+.band b{font-size:19px;display:block;margin-bottom:12px}.band .btn{background:#1D2250;color:#fff}
+.dn-w{position:relative;width:210px;max-width:72%;margin:6px auto 20px}
+.dn-w svg{width:100%;display:block}
+.dn-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.dn-c b{font-size:32px;font-weight:800;line-height:1}
+.cats{display:grid;grid-template-columns:1fr 1fr;gap:20px 12px}
+.cn{display:flex;align-items:center;gap:8px;font-size:13.5px}
+.cn i{width:14px;height:14px;border-radius:5px;flex:none}
+.cv{display:flex;align-items:center;gap:8px;margin:5px 0 2px}
+.cv b{font-size:24px;font-weight:800}
+.cv em{font-style:normal;font-size:12px;background:var(--chip);color:var(--mut);padding:2px 8px;border-radius:8px}
+.msg{position:absolute;right:16px;bottom:84px;width:56px;height:56px;border-radius:50%;border:0;background:var(--pri);color:var(--pri-t);display:none;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.3);cursor:pointer;z-index:4}
+.msg svg{width:26px;height:26px}.msg:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+.thread{max-height:40vh;overflow-y:auto;margin:12px 0;display:flex;flex-direction:column;gap:8px}
+.bub{align-self:flex-end;background:var(--pri);color:var(--pri-t);padding:9px 13px;border-radius:16px 16px 4px 16px;max-width:80%;word-break:break-word}
+.ab{border-radius:26px;position:relative;overflow:hidden;margin-top:16px;color:#fff}
+.ab h3{font-size:22px;line-height:1.15;font-weight:800;margin:6px 0 8px}
+.ab p{font-size:13.5px;opacity:.92;margin:0}
+.ab small{letter-spacing:2px;font-weight:700;font-size:11px;color:#F5B700}
+.ab ul{list-style:none;padding:0;margin:12px 0 14px}
+.ab li{padding:3px 0 3px 22px;position:relative;font-size:13.5px}
+.ab li::before{content:"\2713";position:absolute;left:0;font-weight:800;color:#F5B700}
+
+
+.mv{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;text-align:left}
+.mv div{background:rgba(255,255,255,.12);border-radius:18px;padding:14px}
+.mv b{display:block;margin-bottom:4px;color:#F5B700}.mv span{font-size:12.5px;opacity:.92}
+.ab.a2{background:linear-gradient(135deg,#0F766E,#22A06B);padding:22px 0 0 20px;min-height:250px}
+.ab.a2 .t{max-width:58%;position:relative;z-index:1;padding-bottom:22px}
+.ab.a2 .btn{background:#fff;color:#0F766E}
+.ab.a2 svg{position:absolute;right:-6px;bottom:0;width:46%;height:auto}
+.ab.a3{background:linear-gradient(135deg,#F5B700,#FF9A4D);color:#1D2250;padding:22px 18px;text-align:center}
+.ab.a3 small,.ab.a3 li::before{color:#1D2250}
+.ab.a3 svg{width:min(280px,92%);height:auto;display:block;margin:8px auto 10px}
+.ab.a3 ul{display:inline-block;text-align:left}
+.ab.a1{background:#F3F5FC;color:#1D2250;text-align:left}
+.hr{position:relative;min-height:300px;display:flex;align-items:center}
+.ht{width:55%;padding:22px 0 22px 18px;position:relative;z-index:1}
+.ab.a1 small{color:#F28A00}.ab.a1 p{opacity:.82}
+.hi{position:absolute;right:0;bottom:0;height:100%;width:auto;max-width:none;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 40%);mask-image:linear-gradient(90deg,transparent 0,#000 40%)}
+.ab.a1 .mv{padding:0 14px 16px;margin-top:0}
+.ab.a1 .mv div{background:#fff;border:1px solid #E1E5F5;color:#1D2250}
+.ab.a1 .mv b{color:#F28A00}
+.pk{width:100%;height:auto;display:block;border-radius:18px;margin:10px 0 12px;box-shadow:0 10px 24px rgba(29,34,80,.25)}
+.lh{padding:20px}
+.lh h1{font-size:28px;line-height:1.1;margin:8px 0}
+.lh h3{font-size:22px;line-height:1.15;font-weight:800;margin:6px 0 8px}
+.lh p{margin:0}
+.eyebrow{letter-spacing:2px;font-weight:700;font-size:11px;color:#F28A00}
+.pic{width:100%;height:auto;display:block;border-radius:18px;margin-top:16px}
+.empty{text-align:center;padding:16px}.empty .pic{margin:0}
+.empty b{display:block;font-size:19px;margin:14px 0 4px}.empty p{margin:0 0 14px}
+.ab.a1,.ab.a2,.ab.a3{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.ab small,.ab.a1 small,.ab.a3 small,.ab li::before,.ab.a3 li::before,.ab .mv b,.ab.a1 .mv b{color:#F28A00}
+.ab .mv div,.ab.a1 .mv div{background:var(--bg);border:1px solid var(--line);color:var(--ink)}
+.ab.a2 .btn,.ab.a3 .btn{background:var(--pri)!important;color:var(--pri-t)!important}
+.band{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.band .btn{background:var(--pri);color:var(--pri-t)}
+.posters{gap:14px}
+.bn{flex:0 0 88%;border-radius:28px;padding:20px 0 20px 20px;min-height:216px;box-shadow:0 16px 28px -14px rgba(29,34,80,.5),inset 0 0 0 1px rgba(255,255,255,.18);background:radial-gradient(circle at 100% 0,rgba(255,255,255,.26),transparent 48%),radial-gradient(rgba(255,255,255,.16) 1.2px,transparent 1.6px) 0 0/14px 14px,linear-gradient(135deg,var(--g1),var(--g2))}
+.bn.b1{--g1:#2B3590;--g2:#5A3FD1}.bn.b2{--g1:#0F766E;--g2:#2BB673}.bn.b3{--g1:#F5B700;--g2:#FF8A4D}
+.bn .chipi{width:38px;height:38px;border-radius:13px;background:rgba(255,255,255,.2);display:grid;place-items:center;margin-bottom:12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.25)}
+.bn.b3 .chipi{background:rgba(29,34,80,.12);box-shadow:inset 0 0 0 1px rgba(29,34,80,.15)}
+.bn small{display:block;font-size:10.5px;font-weight:800;letter-spacing:1.6px;opacity:.85;margin-bottom:4px}
+.bn b{font-size:19px;line-height:1.15}
+.bn p{font-size:12.5px}
+.bn .cta{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--c);padding:9px 14px 9px 16px;border-radius:999px;font-weight:800;font-size:13px;box-shadow:0 8px 16px -6px rgba(0,0,0,.4)}
+.bn .cta i{font-style:normal;transition:transform .2s}
+.bn:hover .cta i{transform:translateX(3px)}
+.bn svg.il{width:50%;filter:drop-shadow(0 8px 10px rgba(0,0,0,.25));animation:fl 4s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-5px)}}
+@media(prefers-reduced-motion:reduce){.bn svg.il{animation:none}}
+.seg{display:inline-flex;background:var(--chip);border-radius:16px;padding:4px;margin-bottom:14px}
+.seg button{border:0;background:none;font:inherit;font-weight:800;font-size:16px;padding:8px 20px;border-radius:12px;color:var(--mut);cursor:pointer}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.seg button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.paper{--ink:#1D2250;--mut:#6B7094;--line:#E4E6F2;background:#fff;color:#1D2250;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 10px 30px -14px rgba(29,34,80,.35)}
+.paper .ph{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding-bottom:14px;border-bottom:2px solid #F28A00}
+.paper .mut{color:#6B7094;font-size:12.5px}
+.pb{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.pb small{font-size:10.5px;font-weight:800;letter-spacing:1.4px;color:#F28A00;display:block;margin-bottom:3px}
+.pb b{display:block}.pb span{display:block;font-size:12.5px;color:#6B7094;word-break:break-word}
+.it{width:100%;border-collapse:collapse;font-size:13.5px}
+.it th{text-align:left;font-size:11.5px;color:#6B7094;border-bottom:1px solid var(--line);padding:6px 0}
+.it th:last-child,.it td:last-child{text-align:right}
+.it td{padding:8px 0;border-bottom:1px solid var(--line)}
+.it .tt td{font-weight:800;border-bottom:0;border-top:2px solid #1D2250}
+.pb2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.pb2 div{background:#F3F4FA;border-radius:12px;padding:10px;font-size:12px;color:#6B7094}
+.pb2 b{display:block;font-size:17px;color:#1D2250}
+.ft{font-size:11.5px;color:#6B7094;text-align:center;margin:14px 0 0}
+@page{margin:12mm}
+@media print{
+ body *{visibility:hidden!important}
+ .paper,.paper *{visibility:visible!important}
+ .paper{position:fixed;left:0;top:0;width:100%;max-width:none;border:0;box-shadow:none;border-radius:0;padding:0}
+ html,body,#app,main{height:auto!important;overflow:visible!important;background:#fff!important}
+ .noprint{display:none!important}
+}
+#rapp{--bg:#0B1020;--card:#151B34;--ink:#F2F4FF;--mut:#8D94BA;--line:#252C52;--pri:#F5B700;--pri-t:#1D2250;--chip:#1E2547;--ok:#3DDC97;--bad:#FF6B7A;max-width:430px;height:100%;margin:0 auto;display:none;flex-direction:column;position:relative;background:radial-gradient(120% 60% at 50% 0,#1B2350 0,#0B1020 60%);color:var(--ink);overflow:hidden}
+#rmain{flex:1;overflow-y:auto;padding:18px 16px 112px}
+#rtoast{bottom:104px}
+.rnav{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));width:calc(100% - 36px);max-width:370px;display:flex;gap:4px;background:rgba(30,37,71,.94);border:1px solid var(--line);border-radius:28px;padding:7px;box-shadow:0 18px 30px -12px rgba(0,0,0,.7);z-index:4}
+.rnav button{flex:1;border:0;background:none;color:var(--mut);font:inherit;font-size:11px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:22px;cursor:pointer;position:relative}
+.rnav button.on{background:var(--pri);color:#1D2250}
+.rnav button:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.rnav svg{width:22px;height:22px}
+.bdg{position:absolute;top:2px;left:calc(50% + 6px);background:var(--bad);color:#fff;border-radius:9px;min-width:17px;height:17px;font:700 10px/17px Manrope,sans-serif;text-align:center;font-style:normal;padding:0 4px}
+.rtag{background:var(--acc);color:#1D2250;font-weight:800;font-size:10px;letter-spacing:1px;padding:3px 8px;border-radius:8px;margin-left:6px;align-self:center}
+.rtop{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.rbell{position:relative;width:44px;height:44px;border-radius:50%;background:var(--chip);border:0;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.rbell svg{width:21px;height:21px}
+.rbell i{position:absolute;top:-2px;right:-2px;min-width:18px;height:18px;border-radius:9px;background:var(--bad);color:#fff;font:700 11px/18px Manrope,sans-serif;text-align:center;font-style:normal;padding:0 4px}
+.pw{width:176px;height:176px;border-radius:50%;margin:8px auto 18px;display:grid;place-items:center;border:0;cursor:pointer;background:radial-gradient(circle at 30% 25%,#2A3366,#151B34);color:var(--mut);box-shadow:0 0 0 10px rgba(255,255,255,.04),0 0 0 22px rgba(255,255,255,.02);font:800 17px Manrope,sans-serif;letter-spacing:1px}
+.pw span{display:block;text-align:center}.pw svg{width:44px;height:44px;display:block;margin:0 auto 6px}
+.pw.on{background:radial-gradient(circle at 30% 25%,#FFD34D,#F5B700 60%,#E09B00);color:#1D2250;animation:pu 2.4s ease-in-out infinite}
+@keyframes pu{0%,100%{box-shadow:0 0 0 10px rgba(245,183,0,.2),0 0 0 22px rgba(245,183,0,.08)}50%{box-shadow:0 0 0 16px rgba(245,183,0,.14),0 0 0 32px rgba(245,183,0,.04)}}
+@media(prefers-reduced-motion:reduce){.pw.on{animation:none;box-shadow:0 0 0 12px rgba(245,183,0,.2)}}
+.pw:focus-visible{outline:3px solid #fff;outline-offset:6px}
+.rst{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rst div{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;text-align:center}
+.rst b{display:block;font-size:24px;font-weight:800}.rst span{font-size:12px;color:var(--mut)}
+.tk{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:16px;margin-bottom:12px}
+.tk.new{border-color:var(--pri);box-shadow:0 0 0 3px rgba(245,183,0,.15)}
+.tk .hd{display:flex;gap:12px;align-items:center}
+.tk .sb{width:44px;height:44px;border-radius:14px;background:var(--chip);display:grid;place-items:center;color:var(--pri);flex:none}
+.tk .step{display:flex;gap:6px;margin:12px 0}.tk .step i{flex:1;height:5px;border-radius:5px;background:var(--line)}.tk .step i.d{background:var(--ok)}
+.rbtn{border:0;border-radius:16px;padding:13px 10px;font:inherit;font-weight:800;cursor:pointer;background:var(--pri);color:#1D2250;text-decoration:none;text-align:center;display:block}
+.rbtn.g{background:var(--chip);color:var(--ink)}
+.rbtn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.rhero{padding:10px 0 4px}
+.rill{width:min(250px,72%);height:auto;display:block;margin:14px auto 6px}
+.rform{background:var(--card);border:1px solid var(--line);border-radius:26px;padding:18px;margin-top:14px}
+.rseg{display:flex;background:var(--chip);border-radius:16px;padding:4px;margin-bottom:4px}
+.rseg button{flex:1;border:0;background:none;color:var(--mut);font:inherit;font-weight:800;padding:10px;border-radius:12px;cursor:pointer}
+.rseg .on{background:var(--pri);color:#1D2250}
+.rq{list-style:none;padding:0;margin:12px 0 14px}
+.rq li{padding:3px 0 3px 22px;position:relative;font-size:13.5px}
+.rq li::before{content:"\2713";position:absolute;left:0;font-weight:800;color:#F28A00}
+.up{display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line);border-radius:16px;padding:12px;cursor:pointer;margin-top:12px;background:var(--chip)}
+.up:focus-within{outline:3px solid var(--acc);outline-offset:2px}
+.pvw{width:56px;height:56px;border-radius:12px;object-fit:cover;flex:none}
+.upi{width:56px;height:56px;border-radius:12px;background:var(--card);display:grid;place-items:center;color:var(--pri);flex:none}
+.up b{font-size:14px}
+.rsh{position:absolute;inset:0;background:rgba(5,8,20,.72);display:none;align-items:flex-end;z-index:8}
+.rsh.show{display:flex}
+.rsc{background:var(--card);width:100%;border-radius:26px 26px 0 0;padding:18px 18px 26px;max-height:90%;overflow-y:auto}
+.appf{display:flex;gap:12px;align-items:center;margin:12px 0}
+.appf img{width:72px;height:72px;border-radius:16px;object-fit:cover;flex:none}
+.appf b{display:block}.appf span{display:block;font-size:12.5px;color:var(--mut)}
+.docp{width:100%;max-height:200px;object-fit:contain;border-radius:14px;background:var(--chip);margin:6px 0 14px;display:block}
+.avi{border-radius:50%;object-fit:cover;flex:none}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 8px}
+.opt{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:var(--chip);color:var(--ink);border-radius:14px;padding:10px;font:inherit;font-weight:700;cursor:pointer;text-align:left}
+.opt i{width:20px;height:20px;border-radius:6px;border:2px solid var(--mut);display:grid;place-items:center;font-style:normal;font-size:13px;line-height:1;flex:none}
+.opt.on{border-color:var(--pri);background:rgba(245,183,0,.14)}
+.opt.on i{background:var(--pri);border-color:var(--pri);color:#1D2250}
+.opt:disabled{opacity:.6}
+#aapp{--bg:#EEF1F8;--card:#fff;--ink:#14183A;--mut:#6A7094;--line:#DDE2F0;--pri:#1D2250;--pri-t:#fff;--chip:#E8EBF7;--ok:#1E9E6A;--bad:#D64550;--wait:#B87400;max-width:1000px;height:100%;margin:0 auto;display:none;flex-direction:column;position:relative;background:var(--bg);color:var(--ink)}
+.ahd{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#14183A;color:#fff;border:0}
+.abell{position:relative;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer}
+.abell svg{width:20px;height:20px}
+.abell i{position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;border-radius:9px;background:#F5B700;color:#1D2250;font:800 11px/18px Manrope,sans-serif;text-align:center;font-style:normal;padding:0 4px}
+.alk{background:none;border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:12px;padding:8px 12px;font:inherit;font-weight:700;cursor:pointer}
+.atabs{display:none;gap:8px;overflow-x:auto;padding:10px 16px;background:var(--card);border-bottom:1px solid var(--line)}
+.atabs button{border:0;background:var(--chip);color:var(--ink);border-radius:20px;padding:8px 14px;font:inherit;font-weight:700;white-space:nowrap;cursor:pointer;display:flex;gap:6px;align-items:center}
+.atabs button.on{background:var(--pri);color:#fff}
+.atabs button:focus-visible,.abell:focus-visible,.alk:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.bdg2{background:#F5B700;color:#1D2250;border-radius:9px;min-width:18px;height:18px;font:800 11px/18px Manrope,sans-serif;text-align:center;font-style:normal;padding:0 5px}
+#amain{flex:1;overflow-y:auto;padding:16px 16px 40px}
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+button.ast{text-align:left;cursor:pointer;font:inherit;color:inherit}
+.ast b{display:block;font-size:26px;font-weight:800}.ast span{color:var(--mut);font-size:13px}
+#aapp .rsc{max-width:520px;margin:0 auto}
+#atoast{bottom:30px}
+#aapp .rsc,#aapp .rsh{color:var(--ink)}
+
+/* ===== webview + drawer + dashboard additions ===== */
+html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+#aapp{height:100vh;height:100dvh;width:100%}
+#amain{-webkit-overflow-scrolling:touch}
+.rban{position:absolute;left:16px;right:16px;top:70px;background:#F5B700;color:#1D2250;padding:12px 16px;border-radius:14px;z-index:15;display:none;text-align:center;cursor:pointer;box-shadow:0 10px 24px rgba(0,0,0,.25)}
+.rban.show{display:block}
+.hmb{width:42px;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;display:grid;place-items:center;cursor:pointer;flex:none}
+.hmb svg{width:22px;height:22px}.hmb:focus-visible,.dx:focus-visible,.di:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.dbg{position:absolute;inset:0;background:rgba(10,12,40,.55);opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
+.dbg.show{opacity:1;pointer-events:auto}
+.drw{position:absolute;top:0;bottom:0;left:0;width:84%;max-width:320px;background:var(--card);z-index:21;transform:translateX(-104%);transition:transform .28s ease;display:flex;flex-direction:column;box-shadow:14px 0 40px rgba(0,0,0,.3);visibility:hidden}
+.drw.show{transform:none;visibility:visible}
+@media(prefers-reduced-motion:reduce){.drw,.dbg{transition:none}}
+.dh{background:linear-gradient(135deg,#14183A,#2B3590 70%,#5A3FD1);color:#fff;padding:calc(20px + env(safe-area-inset-top,0px)) 18px 18px}
+.dh .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dh .rtag{margin:0}
+.dx{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;display:grid;place-items:center;cursor:pointer}
+.dx svg{width:20px;height:20px}
+.dme{display:flex;align-items:center;gap:8px;margin-top:14px;font-size:12.5px;opacity:.9}
+.dsec{font-size:10.5px;font-weight:800;letter-spacing:1.6px;color:var(--mut);padding:14px 12px 6px}
+.dnav{flex:1;overflow-y:auto;padding:4px 12px 12px;display:flex;flex-direction:column;gap:4px;background:none;border:0}
+.di{width:100%;display:flex;align-items:center;gap:12px;border:0;background:none;color:var(--ink);font:inherit;font-weight:700;padding:10px 12px;border-radius:16px;cursor:pointer;text-align:left;margin-bottom:4px}
+.di .dic{width:40px;height:40px;border-radius:13px;background:var(--chip);color:var(--pri);display:grid;place-items:center;flex:none}
+.di .dic svg{width:21px;height:21px}
+.di .l{flex:1}
+.di.on{background:var(--pri);color:#fff;box-shadow:0 8px 18px -8px rgba(29,34,80,.6)}
+.di.on .dic{background:rgba(255,255,255,.18);color:#fff}
+.di .bdg2{margin-left:auto}
+.df{padding:10px 12px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.df .di .dic{background:color-mix(in srgb,var(--bad) 14%,transparent);color:var(--bad)}
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.mg.m3{grid-template-columns:repeat(3,1fr)}
+.mt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px 4px 8px;text-align:center;cursor:pointer;font:inherit;color:inherit;min-width:0}
+.mt b{display:block;font-size:17px;font-weight:800;line-height:1.2}
+.mt span{display:block;font-size:10.5px;color:var(--mut);line-height:1.2;margin-top:2px}
+.mt.hot{border-color:var(--acc);box-shadow:0 0 0 2px color-mix(in srgb,var(--acc) 25%,transparent)}
+.mt:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.sh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.sh .big{font-size:24px}
+.rng .chip{padding:6px 11px;font-size:12.5px}
+.sg2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sg2 .full{grid-column:1/-1}
+.sg2 .ast b{font-size:22px}
+.cm{text-align:center}
+.cm .mut{display:block}
+@media(min-width:700px){#amain{padding-left:24px;padding-right:24px}.mg{gap:12px}}
+/* ===== responsive: phone = app view, tablet/laptop/desktop = full screen with fixed sidebar ===== */
+@media(min-width:700px){#aapp{max-width:none}}
+@media(min-width:1024px){
+ #aapp{display:grid!important;grid-template-columns:280px minmax(0,1fr);grid-template-rows:auto minmax(0,1fr)}
+ #aapp .drw{position:static;grid-column:1;grid-row:1/3;width:auto;max-width:none;transform:none;visibility:visible;box-shadow:none;border-right:1px solid var(--line);transition:none;overflow-y:auto}
+ #aapp .dbg{display:none}
+ #aapp .hmb,#aapp .dx{display:none}
+ #aapp .ahd{grid-column:2;grid-row:1;padding:14px 28px}
+ #aapp #amain{grid-column:2;grid-row:2;padding:24px 32px 48px}
+ #amain>*{max-width:1500px;margin-left:auto;margin-right:auto}
+ .agrid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+ .rban{left:calc(280px + 32px);right:32px}
+ #amain svg[viewBox^="0 0 360"]{max-height:300px;width:100%}
+}
+@media(min-width:1500px){#aapp{grid-template-columns:300px minmax(0,1fr)}#aapp #amain{padding:28px 48px 56px}}
+
+.upl{display:flex;align-items:center;gap:14px;border:1.5px dashed var(--line);border-radius:18px;padding:12px;background:var(--chip);cursor:pointer;margin-bottom:12px;position:relative}
+.upl input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;padding:0;border:0}
+.upl .pl{width:64px;height:64px;border-radius:14px;background:var(--card);border:1px solid var(--line);display:grid;place-items:center;color:var(--acc);font-size:30px;font-weight:700;flex:none;overflow:hidden}
+.upl .pl img{width:100%;height:100%;object-fit:cover}
+.upl b{display:block;color:var(--ok)}.upl span{display:block;font-size:12.5px;color:var(--mut)}
+.upl:focus-within{outline:3px solid var(--acc);outline-offset:2px}
+.pwx{position:relative}.pwx input{padding-right:48px}
+.pwx button{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;background:none;color:var(--mut);cursor:pointer;display:grid;place-items:center;border-radius:10px;padding:0}
+.pwx button svg{width:20px;height:20px}
+.fh{font-size:20px;font-weight:800;margin:0 0 4px}
+.sheetf label{margin-top:12px}
+.abtn{display:flex;gap:8px;flex-wrap:wrap}.abtn .btn{flex:1;min-width:110px}
+.btn.dng{color:var(--bad);border-color:var(--bad)}
+
+.thr{display:flex;align-items:center;gap:12px;width:100%;margin-bottom:10px;cursor:pointer;font:inherit;color:inherit;text-align:left}
+.thav{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#2B3590,#5A3FD1);color:#fff;display:grid;place-items:center;font-weight:800;flex:none}
+.ach{position:absolute;left:0;right:0;top:0;height:100%;z-index:30;background:var(--bg);display:none;flex-direction:column;will-change:transform}
+.ach.on{display:flex}
+.chh{display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top,0px)) 12px 12px;background:linear-gradient(135deg,#14183A,#2B3590);color:#fff;flex:none}
+.acl{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:6px;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.cb2{max-width:80%;padding:9px 13px;border-radius:18px;word-break:break-word;white-space:pre-wrap;font-size:14.5px;line-height:1.4}
+.cb2.me{align-self:flex-end;background:var(--pri);color:#fff;border-bottom-right-radius:5px}
+.cb2.ad{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:5px}
+.cb2 time{display:block;font-size:10.5px;opacity:.65;margin-top:3px;text-align:right}
+.cday{align-self:center;font-size:11.5px;color:var(--mut);background:var(--chip);padding:3px 11px;border-radius:99px;margin:6px 0}
+.chi{display:flex;align-items:flex-end;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--line);flex:none}
+.chi textarea{flex:1;resize:none;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);border-radius:22px;padding:11px 16px;font:inherit;font-size:15px;max-height:112px;line-height:1.35;outline:none;width:auto}
+.chi button{width:46px;height:46px;border-radius:50%;border:0;background:var(--pri);color:#fff;display:grid;place-items:center;cursor:pointer;flex:none}
+.chi button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div id="aapp"><header class="ahd" id="ahd"></header><main id="amain"></main><div class="rsh" id="ash"><div class="rsc" id="asc"></div></div><div class="rban" id="abn" role="status" onclick="A.view=null;A.tab='req';aDraw()"></div><div class="toast" id="atoast" role="status"></div><div class="dbg" id="adbg" onclick="aDrawer(false)"></div><div class="ach" id="ach"></div><aside class="drw" id="adw" aria-label="Menu"></aside></div>
+<script>
+/* ===== SETUP 1: shared Firebase project — same config in the Merchant, Rider and Admin apps ===== */
+const FIREBASE_CONFIG={apiKey:'AIzaSyBZCZPFMJpAFcHYJCvll3QHr7inRagqoY4',authDomain:'druto-5b207.firebaseapp.com',databaseURL:'https://druto-5b207-default-rtdb.firebaseio.com',projectId:'druto-5b207',storageBucket:'druto-5b207.firebasestorage.app',messagingSenderId:'1002138086602',appId:'1:1002138086602:web:341eb536387092d73c5833',measurementId:'G-RM24ZX3JKK'};
+/* ===== SETUP 2: where the three apps live (relative names work when all files sit in one hosting folder) ===== */
+const APP_LINKS={"merchant":"DRUTO_Merchant_App.html","rider":"DRUTO_Rider.html","admin":"DRUTO_Admin.html"};
+const BRAND="<svg class=\"lg\" viewBox=\"0 0 280 200\" aria-hidden=\"true\"><polygon points=\"8,76 122,66 122,80\" fill=\"#F7931E\"/><polygon points=\"40,50 140,46 140,58\" fill=\"#F7931E\"/><polygon points=\"26,106 126,98 126,110\" fill=\"#F7931E\"/><polygon points=\"50,134 128,128 128,138\" fill=\"#F7931E\"/><polygon points=\"132,66 200,94 186,190 130,150\" fill=\"#FF9A2E\"/><polygon points=\"208,94 276,52 270,134 194,190\" fill=\"#F58220\"/><polygon points=\"128,52 214,12 272,44 206,84\" fill=\"#F7931E\"/><path d=\"M132 58l72 30M204 90L190 188\" stroke=\"#fff\" stroke-width=\"7\" fill=\"none\" stroke-linejoin=\"round\"/></svg><div class=\"bn2\"><b>DRUTO</b><small>COURIER &amp; LOGISTICS</small></div>";
+const I={
+home:'<path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+box:'<path d="M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/>',
+plus:'<path d="M12 5v14M5 12h14"/>',
+wallet:'<path d="M3 7a2 2 0 0 1 2-2h13v4M3 7v11a2 2 0 0 0 2 2h15V9H5a2 2 0 0 1-2-2zM16 14h2"/>',
+user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+truck:'<path d="M2 6h11v10H2zM13 9h4l4 4v3h-8zM7 19h.01M17 19h.01"/>',
+calc:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M12 12h2M8 16h2M12 16h2"/>',
+help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/>',
+star:'<path d="M12 2l3 7 7 .6-5.3 4.6L18.5 22 12 18l-6.5 4 1.8-7.8L2 9.6 9 9z"/>',
+bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21h4"/>',
+search:'<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>',
+lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+back:'<path d="M15 18l-6-6 6-6"/>',check:'<path d="M5 12l5 5 9-10"/>',power:'<path d="M12 3v8M6.4 6.4a8 8 0 1 0 11.2 0"/>',list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/>'};
+Object.assign(I,{
+mail:'<path d="M3 6h18v12H3zM3 7l9 6 9-6"/>',send:'<path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/>',
+chat:'<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12zM8 11h8M8 14h5"/>',
+menu:'<path d="M4 6h16M4 12h16M4 18h16"/>',
+x:'<path d="M6 6l12 12M18 6L6 18"/>',
+out:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
+shop:'<path d="M4 9l1-5h14l1 5M4 9a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0M5 11v9h14v-9M10 20v-5h4v5"/>',
+chart:'<path d="M3 3v18h18M7 15l4-5 3 3 5-7"/>',eye:'<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'});
+const ic=(n,s)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" ${s?`style="width:${s}px;height:${s}px"`:''}>${I[n]}</svg>`;
+const tk=n=>'৳'+Math.round(n).toLocaleString('en-IN');
+const $=s=>document.querySelector(s);
+const ST={rej:['Rejected','t-bad'],del:['Delivered','t-ok'],way:['On the way','t-way'],pend:['Pickup pending','t-wait'],ret:['Returned','t-bad'],hold:['On hold','t-wait'],pret:['Paid return','t-bad'],part:['Partial return','t-bad'],exch:['Exchange','t-way'],other:['Other','t-way']};
+const ZONE=[['Inside Dhaka',60],['Dhaka suburbs',90],['Nationwide',120]];
+const ini=n=>n.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const okPhone=p=>/^01\d{9}$/.test(p);
+const v=id=>$('#f_'+id).value.trim();
+const fld=(id,l,o={})=>`<label for="f_${id}">${l}</label><input id="f_${id}" type="${o.t||'text'}" placeholder="${o.p||''}" value="${o.v||''}" ${o.m?`inputmode="${o.m}"`:''} autocomplete="off">`;
+const CATS=[['Delivered',['del'],'#0A8A5A'],['Active Deliveries',['way','pend'],'#74C69D'],['On hold',['hold'],'#FF8A00'],['Regular Return',['ret'],'#E0405A'],['Paid Return',['pret'],'#EE7A8B'],['Partial Return',['part'],'#F6A5AE'],['Exchange',['exch'],'#FFC4CA'],['Others',['other','rej'],'#1E9BF0']];
+const esc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const chg=o=>{const b=(ZONE[o.z]||ZONE[0])[1],ex=Math.max(0,Math.ceil(+o.w||1)-1)*20;return{b,ex,t:b+ex}};
+const slab=o=>o.s!=='pend'?(ST[o.s]||['Update','t-way']):[({pickup_requested:'Pickup requested',pickup_assigned:'Rider assigned',pickup_accepted:'Rider accepted',picked_up:'Picked up',delivery_assigned:'Delivery rider assigned'})[o.stage]||'Pickup pending',['picked_up','delivery_assigned'].includes(o.stage)?'t-way':'t-wait'];
+/* ===== network layer: shared db, with same-browser fallback ===== */
+const net={
+ db:null,subs:[],
+ L(){try{return JSON.parse(localStorage.getItem('druto_net')||'{}')}catch(e){return{}}},
+ W(d){try{localStorage.setItem('druto_net',JSON.stringify(d))}catch(e){}},
+ tick(){this.subs.forEach(f=>f())},
+ set(c,id,x){if(this.db)return this.db.collection(c).doc(id).set(x);const d=this.L();(d[c]=d[c]||{})[id]=x;this.W(d);this.tick();return Promise.resolve()},
+ merge(c,id,p){if(this.db)return this.db.collection(c).doc(id).set(p,{merge:true});const d=this.L();(d[c]=d[c]||{})[id]=Object.assign(d[c][id]||{},p);this.W(d);this.tick();return Promise.resolve()},
+ del(c,id){if(this.db)return this.db.collection(c).doc(id).delete();const d=this.L();if(d[c])delete d[c][id];this.W(d);this.tick();return Promise.resolve()},
+ add(c,x){if(this.db)return this.db.collection(c).add(x);return this.set(c,'x'+Date.now()+Math.random().toString(36).slice(2,6),x)},
+ patch(c,id,p){if(this.db)return this.db.collection(c).doc(id).update(p);const d=this.L();if(d[c]&&d[c][id]){Object.assign(d[c][id],p);this.W(d);this.tick()}return Promise.resolve()},
+ get(c,id){if(this.db)return this.db.collection(c).doc(id).get().then(s=>s.exists?s.data():null);const d=this.L();return Promise.resolve((d[c]&&d[c][id])||null)},
+ watch(c,cb,w){
+  if(this.db){let q=this.db.collection(c);if(w)q=q.where(w[0],'==',w[1]);return q.onSnapshot(s=>cb(s.docs.map(d=>({id:d.id,...d.data()}))),e=>{net.err=e;net.onerr&&net.onerr(c,e)})}
+  const f=()=>cb(Object.entries(this.L()[c]||{}).filter(([k,v])=>!w||v[w[0]]===w[1]).map(([k,v])=>({id:k,...v})));
+  this.subs.push(f);f();return()=>{this.subs=this.subs.filter(y=>y!==f)}},
+ watchDoc(c,id,cb){
+  if(this.db)return this.db.collection(c).doc(id).onSnapshot(s=>cb(s.exists?s.data():null),()=>{});
+  const f=()=>cb(((this.L()[c]||{})[id])||null);this.subs.push(f);f();return()=>{this.subs=this.subs.filter(y=>y!==f)}}
+};
+addEventListener('storage',e=>{if(e.key==='druto_net')net.tick()});
+let NOTICES=[],NETREADY=false,seenIds=null;
+async function connectNet(){
+ try{
+  if(FIREBASE_CONFIG.projectId&&window.firebase){
+   if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
+   net.db=firebase.firestore();net.mode='firebase';return;
+  }
+ }catch(e){console.warn('Firebase could not start',e)}
+ try{net.db=window.claude?await window.claude.use('db'):null}catch(e){net.db=null}
+ net.mode=net.db?'claude-db':'local';
+}
+
+const evt=(key,text,by)=>net.add('events',{key,text,ts:Date.now(),by}).catch(()=>{});
+async function startNet(){await connectNet();NETREADY=true;if(A.logged)startAdminNet();aDraw()}
+/* ===== admin app (separate layout, own route) ===== */
+let A={logged:false,tab:'over',view:null,q:'',pf:'all',cfg:undefined,un:[],rng:'month'};
+try{A.logged=localStorage.getItem('druto_adm')==='1'}catch(e){}
+let D={merchants:[],riders:[],parcels:[],requests:[],apps:[],notices:[],events:[],wd:[],pops:[],chats:[]};
+const adt=t=>t?new Date(t).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'-';
+const aerr=m=>{const e=$('#aerr');if(e)e.textContent=m};
+const sha=async t=>{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')};
+let atm;function atoast(m){const t=$('#atoast');t.textContent=m;t.style.display='block';clearTimeout(atm);atm=setTimeout(()=>t.style.display='none',2600)}
+let abT;function aBanner(m){const b=$('#abn');b.innerHTML='<b>'+m+'</b>';b.classList.add('show');clearTimeout(abT);abT=setTimeout(()=>b.classList.remove('show'),5000)}
+const aClose=()=>$('#ash').classList.remove('show');
+const aSheet=h=>{$('#asc').innerHTML=h;$('#ash').classList.add('show')};
+const aBack=()=>`<button class="back" onclick="A.view=null;aDraw()">${ic('back')}Back</button>`;
+function stopAdminNet(){A.un.forEach(f=>{try{f&&f()}catch(e){}});A.un=[]}
+const tms=t=>t&&t.toMillis?t.toMillis():(+t||0);
+function aNorm(k,x){
+ if(k==='merchants'){x.phone=x.phone||x.ph||x.id;x.shop=x.shop||x.sn||'';x.name=x.name||x.mn||'';x.joined=tms(x.joined||x.ts)}
+ if(k==='riders'){if(!x.phone)x.phone=x.id;if(!x.kyc)x.kyc='pending';x.joined=tms(x.joined)}
+ if(k==='parcels'){x.cod=+x.cod||0;x.w=+x.w||1;x.z=ZONE[x.z]?x.z:0;x.ts=tms(x.ts);x.oid=x.oid||x.id;x.s=x.s||'pend'}
+ if(k==='rider_applications'){if(!x.phone)x.phone=x.id;x.submittedAt=tms(x.submittedAt)}
+ if(k==='requests'){x.status=(!x.status||x.status==='new')?'open':x.status;x.parcelIds=Array.isArray(x.parcelIds)?x.parcelIds:[];x.mphone=x.mphone||x.ph||''}
+ if(k==='withdrawals'){x.amount=+x.amount||0;x.status=x.status||'pending';x.ts=tms(x.ts)}
+ if(k==='popups'||k==='chats')x.ts=tms(x.ts);
+ if(k==='notices'||k==='requests')x.ts=tms(x.ts);
+ return x}
+function startAdminNet(){
+ if(!NETREADY)return;stopAdminNet();
+ [['merchants','merchants'],['riders','riders'],['parcels','parcels'],['requests','requests'],['rider_applications','apps'],['notices','notices'],['events','events'],['withdrawals','wd'],['popups','pops'],['chats','chats']].forEach(([c,k])=>A.un.push(net.watch(c,l=>{D[k]=l.map(x=>aNorm(k,x)).filter(x=>!(x.deleted||x.status==='deleted'));if(k==='chats'){const n=D.chats.filter(x=>x.from==='merchant').length;if(A.cn!=null&&n>A.cn)atoast('New message from a merchant');A.cn=n}aSoon()})));
+ net.onerr=(c,e)=>{A.dberr=c+': '+((e&&(e.code||e.message))||'error');aBanner('Database error — '+esc(A.dberr))};
+}
+let aPrev=null,aT;
+const aCount=()=>D.wd.filter(w=>w.status==='pending').length+D.requests.filter(r=>r.status==='open').length+D.parcels.filter(p=>p.stage==='picked_up'&&p.s==='pend').length+D.apps.filter(a=>a.status==='pending').length;
+function aSoon(){clearTimeout(aT);aT=setTimeout(()=>{const c=aCount();if(aPrev!==null&&c>aPrev&&A.logged)aBanner('New item needs your action');aPrev=c;aDraw()},150)}
+
+/* auth */
+const ADMIN_CODE='8320';
+function aLogin(){
+ if($('#f_ap').value.trim()!==ADMIN_CODE){aerr('Incorrect code.');return}
+ aEnter();
+}
+function aEnter(){A.logged=true;try{localStorage.setItem('druto_adm','1')}catch(e){}startAdminNet();aDraw()}
+function aOut(){aDrawer(false);try{aCloseChat()}catch(e){}A.logged=false;try{localStorage.removeItem('druto_adm')}catch(e){}stopAdminNet();aDraw()}
+function aAuth(){
+ const brand=`<div class="brand" style="justify-content:center;margin:24px 0 8px">${BRAND}<span class="rtag">ADMIN</span></div>`;
+ return `${brand}<div class="card" style="max-width:420px;margin:14px auto"><b class="st">Admin sign in</b><p class="mut">Enter the admin code to continue.</p><label for="f_ap">Admin code</label><input id="f_ap" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="Enter code" autocomplete="off" onkeydown="if(event.key==='Enter')aLogin()"><div id="aerr" class="err"></div><button class="btn pri full" onclick="aLogin()">Sign in</button></div>`;
+}
+
+/* helpers */
+const walletOf=ps=>{const d=ps.filter(p=>p.s==='del'),c=d.reduce((a,p)=>a+p.cod,0),h=d.reduce((a,p)=>a+chg(p).t,0);return{coll:c,ch:h,bal:c-h,tr:ps.filter(p=>p.s==='pend'||p.s==='way').reduce((a,p)=>a+p.cod,0)}};
+const catGrid=l=>`<div class="cats">${CATS.map(([n,k,col])=>{const x=l.filter(o=>k.includes(o.s));return `<div><div class="cn"><i style="background:${col}"></i>${n}</div><div class="cv"><b>${x.length}</b></div><span class="mut">${tk(x.reduce((a,o)=>a+o.cod,0))}</span></div>`}).join('')}</div>`;
+const prow=p=>`<button class="ord" onclick="A.view={t:'p',id:'${p.id}'};aDraw()"><div class="ic">${ic('box',22)}</div><div class="m"><b>${esc(p.oid)} · ${esc(p.shop)}</b><span>${esc(p.name)} · ${esc(p.addr)}</span></div><div class="rr"><b>${tk(p.cod)}</b><span class="tag ${slab(p)[1]}">${slab(p)[0]}</span></div></button>`;
+const pmatch=(p,f)=>{const st=p.stage||'created';
+ if(f==='all')return true;
+ if(f==='req')return p.s==='pend'&&['created','pickup_requested'].includes(st);
+ if(f==='pickup')return p.s==='pend'&&['pickup_assigned','pickup_accepted'].includes(st);
+ if(f==='ready')return p.s==='pend'&&st==='picked_up';
+ if(f==='way')return p.s==='way'||(p.s==='pend'&&st==='delivery_assigned');
+ return p.s===f};
+const hit=(q,arr)=>!q||arr.some(x=>String(x||'').toLowerCase().includes(q));
+function aPList(){const q=A.q.toLowerCase(),l=D.parcels.filter(p=>pmatch(p,A.pf)&&hit(q,[p.oid,p.shop,p.merchant,p.name,p.phone])).sort((a,b)=>b.ts-a.ts);return l.length?l.map(prow).join(''):'<div class="card mut" style="text-align:center">No parcels found.</div>'}
+function aMList(){const q=A.q.toLowerCase(),l=D.merchants.filter(m=>hit(q,[m.shop,m.name,m.phone]));return l.length?l.map(m=>`<button class="ord" onclick="A.view={t:'m',id:'${m.phone}'};aDraw()"><div class="av">${ini(m.shop||m.name||'M')}</div><div class="m"><b>${esc(m.shop)}</b><span>${esc(m.name)} · ${m.phone}</span></div><div class="rr"><b>${D.parcels.filter(p=>p.mphone===m.phone).length} parcels</b><span class="tag ${m.blocked?'t-bad':'t-ok'}">${m.blocked?'Blocked':'Active'}</span></div></button>`).join(''):'<div class="card mut" style="text-align:center">No merchants yet. They appear after they sign in to the merchant app.</div>'}
+const rrow=r=>{const a=D.apps.find(x=>x.id===r.phone||x.phone===r.phone),t=r.blocked?['Blocked','t-bad']:r.kyc==='verified'?['Verified','t-ok']:r.kyc==='rejected'?['Rejected','t-bad']:['Pending','t-wait'];return `<button class="ord" onclick="A.view={t:'r',id:'${r.phone}'};aDraw()">${a&&a.photo?`<img class="avi" src="${a.photo}" alt="" style="width:42px;height:42px">`:`<div class="av">${ini(r.name||'R')}</div>`}<div class="m"><b>${esc(r.name)}</b><span>${r.phone} · ${esc(r.zone||'')}</span></div><div class="rr"><span class="tag ${t[1]}">${t[0]}</span>${r.online?' <span class="tag t-ok">Online</span>':''}</div></button>`};
+const aRiderOf=ph=>D.riders.find(x=>x.phone===ph)||(()=>{const a=D.apps.find(x=>x.id===ph||x.phone===ph);return a?{id:ph,name:a.name,phone:ph,zone:a.zone,kyc:a.status==='verified'?'verified':a.status==='rejected'?'rejected':'pending',joined:a.submittedAt,online:false,blocked:false}:null})();
+const aAllRiders=()=>D.riders.concat(D.apps.filter(a=>!D.riders.some(r=>r.phone===(a.phone||a.id))&&a.status!=='pending').map(a=>aRiderOf(a.phone||a.id)));
+function aRList(){const q=A.q.toLowerCase(),l=aAllRiders().filter(r=>hit(q,[r.name,r.phone,r.zone]));return l.length?l.map(rrow).join(''):'<div class="card mut" style="text-align:center">No riders yet.</div>'}
+function aList(){$('#alist').innerHTML=A.tab==='parcels'?aPList():A.tab==='merch'?aMList():aRList()}
+const sbox=(ph)=>`<input id="aq" placeholder="${ph}" value="${esc(A.q)}" oninput="A.q=this.value;aList()" aria-label="Search">`;
+
+/* tabs */
+/* ===== sales dashboard ===== */
+function aRange(k){
+ const d0=new Date();d0.setHours(0,0,0,0);let s,e,lb;
+ if(k==='lw'){const sd=(d0.getDay()+1)%7;e=new Date(d0);e.setDate(e.getDate()-sd);s=new Date(e);s.setDate(s.getDate()-7);lb='Last week'}
+ else if(k==='lm'){s=new Date(d0.getFullYear(),d0.getMonth()-1,1);e=new Date(d0.getFullYear(),d0.getMonth(),1);lb='Last month'}
+ else{s=new Date(d0.getFullYear(),d0.getMonth(),1);e=new Date(d0);e.setDate(e.getDate()+1);lb='This month'}
+ return{s,e,lb}}
+const dkey=d=>d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate();
+const dshort=d=>d.toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+function aSales(k){
+ const r=aRange(k),days=[],idx={};
+ for(let d=new Date(r.s);d<r.e;d.setDate(d.getDate()+1)){idx[dkey(d)]=days.length;days.push({d:new Date(d),inc:0,cnt:0})}
+ let inc=0,cnt=0,del=0;
+ D.parcels.forEach(p=>{const t=new Date(p.ts);if(!(t>=r.s&&t<r.e))return;const i=idx[dkey(t)];if(i==null)return;cnt++;days[i].cnt++;if(p.s==='del'){const c=chg(p).t;inc+=c;del++;days[i].inc+=c}});
+ const last=new Date(r.e);last.setDate(last.getDate()-1);
+ return{...r,days,inc,cnt,del,span:dshort(r.s)+' – '+dshort(last)}}
+const niceMax=n=>{if(n<=0)return 100;const p=Math.pow(10,Math.floor(Math.log10(n))),f=n/p;return(f<=1?1:f<=2?2:f<=5?5:10)*p};
+const kfmt=n=>n>=1000?(n/1000).toFixed(n%1000?1:0)+'k':String(Math.round(n));
+function aChart(days){
+ const W=360,H=176,L=38,R=12,T=12,B=24,mx0=Math.max(0,...days.map(x=>x.inc)),mx=niceMax(mx0),n=days.length;
+ const X=i=>L+(n>1?i*(W-L-R)/(n-1):(W-L-R)/2),Y=v=>T+(H-T-B)*(1-v/mx);
+ const pts=days.map((x,i)=>[X(i),Y(x.inc)]);
+ const line=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+ const area=n?line+` L${X(n-1).toFixed(1)} ${Y(0)} L${X(0).toFixed(1)} ${Y(0)} Z`:'';
+ const grid=[0,1,2,3,4].map(i=>{const v=mx*i/4,y=Y(v);return `<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/><text x="${L-6}" y="${y+3}" text-anchor="end" font-size="9.5" fill="var(--mut)">${kfmt(v)}</text>`}).join('');
+ const step=Math.ceil(n/6),xl=days.map((x,i)=>i%step===0?`<text x="${X(i)}" y="${H-7}" text-anchor="middle" font-size="9.5" fill="var(--mut)">${x.d.getDate()}</text>`:'').join('');
+ const dots=days.map((x,i)=>(n<=16||x.inc>0)?`<circle cx="${pts[i][0].toFixed(1)}" cy="${pts[i][1].toFixed(1)}" r="${n<=16?3.4:2.2}" fill="var(--card)" stroke="var(--pri)" stroke-width="2"><title>${dshort(x.d)}: ${tk(x.inc)} · ${x.cnt} parcels</title></circle>`:'').join('');
+ return `<svg class="ch" viewBox="0 0 ${W} ${H}" role="img" aria-label="Delivery charge income per day"><defs><linearGradient id="sgr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--pri);stop-opacity:.28"/><stop offset="1" style="stop-color:var(--pri);stop-opacity:0"/></linearGradient></defs>${grid}${xl}${n?`<path d="${area}" fill="url(#sgr)"/><path class="ln s" d="${line}"/>`:''}${dots}${mx0===0?`<text x="${(L+W-R)/2}" y="${H/2-6}" text-anchor="middle" font-size="11.5" fill="var(--mut)">No delivered parcels in this period</text>`:''}</svg>`}
+function aOver(){
+ const rq=D.requests.filter(r=>r.status==='open').length,rd=D.parcels.filter(p=>p.stage==='picked_up'&&p.s==='pend').length,ap=D.apps.filter(a=>a.status==='pending').length;
+ const mt=(n,l,t,hot)=>`<button class="mt${hot&&n>0?' hot':''}" onclick="A.tab='${t}';aDraw()"><b>${n}</b><span>${l}</span></button>`;
+ const sel=aSales(A.rng),cur=aSales('month'),pct=cur.cnt?cur.del/cur.cnt:0,RR=64,C=2*Math.PI*RR;
+ const t0=new Date();t0.setHours(0,0,0,0);const td=D.parcels.filter(p=>p.ts>=t0.getTime()),tdd=td.filter(p=>p.s==='del').length;
+ const chips=[['month','This month'],['lw','Last week'],['lm','Last month']].map(([k,l])=>`<button class="chip ${A.rng===k?'on':''}" onclick="A.rng='${k}';aDraw()">${l}</button>`).join('');
+ const monthName=new Date().toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+ return `<h1>Overview</h1>
+ <div class="mg">${mt(D.merchants.length,'Merchants','merch')}${mt(D.riders.filter(r=>r.online).length+'/'+D.riders.length,'Riders online','riders')}${mt(D.parcels.length,'Parcels','parcels')}${mt(D.parcels.filter(p=>p.s==='del').length,'Delivered','parcels')}</div>
+ <h2>Needs your action</h2>
+ <div class="mg m3">${mt(rq,'Pickup requests','req',1)}${mt(rd,'Ready for delivery','req',1)}${mt(ap,'Rider applications','riders',1)}</div>
+ <h2>Sales</h2>
+ <div class="card"><div class="sh"><div><span class="mut">Delivery charge income</span><div class="big">${tk(sel.inc)}</div></div><div class="rng" role="group" aria-label="Sales period">${chips}</div></div>
+ ${aChart(sel.days)}<div class="mut" style="text-align:center;margin-top:4px">${sel.lb} · ${sel.span}</div></div>
+ <div class="card cm" style="margin-top:12px"><b>Company deliveries · ${monthName}</b>
+  <div class="dn-w"><svg viewBox="0 0 160 160" role="img" aria-label="${cur.del} of ${cur.cnt} parcels delivered this month"><circle cx="80" cy="80" r="${RR}" fill="none" stroke="var(--chip)" stroke-width="16"/><circle cx="80" cy="80" r="${RR}" fill="none" stroke="var(--ok)" stroke-width="16" stroke-linecap="round" stroke-dasharray="${(C*pct).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 80 80)"/></svg><div class="dn-c"><b>${cur.del}</b><span class="mut" style="font-size:12.5px">Delivered</span></div></div>
+  <span class="mut">${Math.round(pct*100)}% of ${cur.cnt} parcels this month</span></div>
+ <div class="sg2" style="margin-top:12px"><div class="card ast"><b>${td.length}</b><span>Today's parcels</span><div class="mut" style="font-size:12px">${tdd} delivered today</div></div><div class="card ast"><b>${sel.cnt}</b><span>Parcels · ${sel.lb.toLowerCase()}</span><div class="mut" style="font-size:12px">${sel.del} delivered</div></div><div class="card ast full"><span>Total delivery charge income · ${sel.lb.toLowerCase()}</span><b>${tk(sel.inc)}</b></div></div>
+ <h2>Recent parcels</h2>${D.parcels.length?D.parcels.slice().sort((a,b)=>b.ts-a.ts).slice(0,6).map(prow).join(''):'<div class="card mut">No parcels yet.</div>'}`;
+}
+const aMOf=ph=>D.merchants.find(m=>m.phone===ph)||{};
+const aReqP=q=>(q.parcelIds||[]).map(id=>D.parcels.find(p=>p.id===id)).filter(Boolean);
+const aTot=ps=>({cod:ps.reduce((s,p)=>s+p.cod,0),ch:ps.reduce((s,p)=>s+chg(p).t,0)});
+function aReqCard(q){
+ const m=aMOf(q.mphone),ps=aReqP(q),t=aTot(ps),row=(l,v)=>v?`<div class="tx"><div>${l}<span>${esc(v)}</span></div></div>`:'';
+ return `<div class="card" style="margin-bottom:12px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(q.shop||m.shop)}</b><span class="mut">${adt(q.ts)}</span></div>
+ <div class="pf" style="margin-top:6px">${row('Merchant',(q.merchant||m.name||'')+' · '+(q.mphone||''))}${row('Pickup address',q.addr||m.pickup)}${row('Payment method',m.pay)}${row('Facebook page',m.fb)}${row('Pickup time',q.slot)}</div>
+ <p style="margin:8px 0 2px"><b>${esc(q.text||'Pickup request')}</b></p>
+ ${ps.length?`<div class="card" style="margin:8px 0;padding:8px 12px">${ps.map(p=>`<div class="tx"><div>${esc(p.oid)} · ${esc(p.name)}<span>${esc(p.addr)}</span></div><b>${tk(p.cod)}</b></div>`).join('')}<div class="tx"><div><b>Total · ${ps.length} parcel${ps.length>1?'s':''}</b><span>Delivery charge ${tk(t.ch)}</span></div><b>${tk(t.cod)}</b></div></div>`:'<div class="mut" style="margin:6px 0">No parcels are attached to this request.</div>'}
+ <div class="abtn" style="margin-top:10px">${ps.length?`<button class="btn line" onclick="aInv('${q.id}')">Invoice</button>`:''}<button class="btn line" onclick="A.view={t:'m',id:'${q.mphone}'};aDraw()">Merchant profile</button><button class="btn pri" onclick="aAssign('pickup','${q.id}')">Send to rider</button></div></div>`;
+}
+function aReq(){
+ const rq=D.requests.filter(r=>r.status==='open').sort((a,b)=>b.ts-a.ts),rd=D.parcels.filter(p=>p.stage==='picked_up'&&p.s==='pend').sort((a,b)=>b.ts-a.ts);
+ const act=D.parcels.filter(p=>p.s==='way'||(p.s==='pend'&&['pickup_assigned','pickup_accepted','delivery_assigned'].includes(p.stage)));
+ return `<h1>Requests</h1><h2>Pickup requests</h2>${rq.length?rq.map(aReqCard).join(''):'<div class="card mut">No open pickup requests.</div>'}
+ <h2>Ready for delivery</h2>${rd.length?rd.map(p=>`<div class="card" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(p.oid)} · ${esc(p.shop)}</b><b>${tk(p.cod)}</b></div><div class="mut">${esc(p.name)} · ${esc(p.phone)}</div><div class="mut">${esc(p.addr)}</div><div class="abtn" style="margin-top:12px"><button class="btn line" onclick="aInvP('${p.id}')">Invoice</button><button class="btn line" onclick="A.view={t:'p',id:'${p.id}'};aDraw()">Details</button><button class="btn pri" onclick="aAssign('delivery','${p.id}')">Send to rider</button></div></div>`).join(''):'<div class="card mut">No parcels waiting for a delivery rider.</div>'}
+ <h2>Withdraw requests</h2>${aWdList()}
+ <h2>In progress</h2>${act.length?act.map(prow).join(''):'<div class="card mut">Nothing in progress.</div>'}`;
+}
+function aWdList(){
+ const w=D.wd.filter(x=>x.status==='pending').sort((a,b)=>b.ts-a.ts);
+ return w.length?w.map(x=>`<div class="card" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(x.shop||aMOf(x.mphone).shop)}</b><b>${tk(x.amount)}</b></div><div class="mut">${esc(x.merchant||'')} · ${esc(x.mphone)}</div><div class="mut">Pay to: ${esc(x.pay||'No method added')} · ${adt(x.ts)}</div><div class="abtn" style="margin-top:10px"><button class="btn line" onclick="A.view={t:'m',id:'${x.mphone}'};aDraw()">Merchant</button><button class="btn line dng" onclick="aWd('${x.id}','rejected')">Reject</button><button class="btn pri" onclick="aWd('${x.id}','paid')">Mark as paid</button></div></div>`).join(''):'<div class="card mut">No withdraw requests.</div>';
+}
+function aWd(id,st){net.merge('withdrawals',id,{status:st,doneAt:Date.now()}).then(()=>atoast(st==='paid'?'Marked as paid':'Withdraw rejected')).catch(e=>atoast('Could not update: '+((e&&(e.code||e.message))||'')))}
+/* popups */
+/* ===== messages: admin <-> merchants ===== */
+const aSeenGet=()=>{try{return JSON.parse(localStorage.getItem('druto_aseen')||'{}')}catch(e){return{}}};
+const aChatUnreadOf=ph=>{const s=aSeenGet()[ph]||0;return D.chats.filter(x=>x.mphone===ph&&x.from==='merchant'&&x.ts>s).length};
+function aChatUnread(){const s=aSeenGet();return D.chats.filter(x=>x.from==='merchant'&&x.ts>(s[x.mphone]||0)).length}
+function aMsgs(){
+ const th={};D.chats.forEach(x=>{(th[x.mphone]=th[x.mphone]||[]).push(x)});
+ const l=Object.entries(th).map(([ph,ms])=>{ms.sort((a,b)=>a.ts-b.ts);return{ph,last:ms[ms.length-1],m:aMOf(ph),u:aChatUnreadOf(ph)}}).sort((a,b)=>b.last.ts-a.last.ts);
+ return `<div class="sh" style="align-items:center;margin-bottom:12px"><h1 style="margin:0">Messages</h1><button class="btn pri" onclick="aMsgNew()">+ New message</button></div>
+ ${l.length?l.map(t=>`<button class="card thr" onclick="aOpenChat('${t.ph}')"><div class="thav">${esc((t.m.shop||t.last.shop||'?').trim().charAt(0).toUpperCase())}</div><div style="flex:1;min-width:0;text-align:left"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(t.m.shop||t.last.shop||t.ph)}</b><span class="mut" style="font-size:12px">${adt(t.last.ts)}</span></div><div class="mut" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${t.last.from==='admin'?'You: ':''}${esc(t.last.text)}</div></div>${t.u?`<i class="bdg2">${t.u}</i>`:''}</button>`).join(''):'<div class="card mut">No messages yet. Merchants can message you from their app, or tap + New message.</div>'}`;
+}
+function aMsgNew(){
+ const ms=D.merchants.slice().sort((a,b)=>String(a.shop).localeCompare(String(b.shop)));
+ aSheet(`<div class="sheetf"><h3 class="fh">New message</h3>${ms.length?`<label for="f_mm">Merchant</label><select id="f_mm">${ms.map(m=>`<option value="${esc(m.phone)}">${esc(m.shop||m.name)} · ${esc(m.phone)}</option>`).join('')}</select><div class="two" style="margin-top:14px"><button class="btn line" onclick="aClose()">Cancel</button><button class="btn pri" onclick="aClose();aOpenChat($('#f_mm').value)">Open chat</button></div>`:'<p class="mut">No merchants yet.</p>'}</div>`);
+}
+function aChatFit(){const c=$('#ach');if(!c||!c.classList.contains('on'))return;const v=window.visualViewport;if(v){c.style.height=v.height+'px';c.style.transform='translateY('+v.offsetTop+'px)'}else c.style.height='100%';const l=$('#acl');if(l)l.scrollTop=l.scrollHeight}
+if(window.visualViewport){visualViewport.addEventListener('resize',aChatFit);visualViewport.addEventListener('scroll',aChatFit)}
+function aOpenChat(ph){
+ A.chat=ph;const m=aMOf(ph),c=$('#ach');
+ c.innerHTML=`<div class="chh"><button class="hmb" onclick="aCloseChat()" aria-label="Back">${ic('back')}</button><div class="thav" style="width:40px;height:40px">${esc((m.shop||'?').trim().charAt(0).toUpperCase())}</div><div style="min-width:0"><b style="display:block">${esc(m.shop||ph)}</b><small style="opacity:.8">${esc(m.name||'')} · ${esc(ph)}</small></div></div><div class="acl" id="acl"></div><div class="chi"><textarea id="acm" rows="1" placeholder="Type a message" aria-label="Message" onfocus="setTimeout(aChatFit,250)" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,112)+'px'" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();aChatSend()}"></textarea><button onclick="aChatSend()" aria-label="Send">${ic('send')}</button></div>`;
+ c.classList.add('on');aChatFit();aChatRefresh(true);
+}
+function aCloseChat(){const c=$('#ach');c.classList.remove('on');c.style.transform='';c.innerHTML='';A.chat=null;aDraw()}
+function aChatRefresh(force){
+ if(!A.chat)return;const l=$('#acl');if(!l)return;const ph=A.chat;
+ const ms=D.chats.filter(x=>x.mphone===ph).sort((a,b)=>a.ts-b.ts),near=l.scrollHeight-l.scrollTop-l.clientHeight<120;let last='';
+ l.innerHTML=ms.length?ms.map(x=>{const d=new Date(x.ts).toDateString()===new Date().toDateString()?'Today':new Date(x.ts).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}),h=d!==last?`<div class="cday">${d}</div>`:'';last=d;return h+`<div class="cb2 ${x.from==='admin'?'me':'ad'}">${esc(x.text)}<time>${new Date(x.ts).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</time></div>`}).join(''):'<div class="mut" style="margin:auto;text-align:center;padding:30px">No messages yet. Write the first message below.</div>';
+ if(force||near)l.scrollTop=l.scrollHeight;
+ const s=aSeenGet(),t=ms.reduce((a,x)=>Math.max(a,x.ts||0),0);if((s[ph]||0)<t){s[ph]=t;try{localStorage.setItem('druto_aseen',JSON.stringify(s))}catch(e){}}
+}
+function aChatSend(){
+ const i=$('#acm'),t=i.value.trim();if(!t||!A.chat)return;const m=aMOf(A.chat);
+ i.value='';i.style.height='auto';i.focus();
+ net.add('chats',{mphone:A.chat,shop:m.shop||'',merchant:m.name||'',from:'admin',text:t,ts:Date.now()}).catch(e=>{i.value=t;atoast('Could not send: '+((e&&(e.code||e.message))||''))});
+}
+function aPopups(){
+ const l=D.pops.slice().sort((a,b)=>b.ts-a.ts);
+ return `<div class="sh" style="align-items:center;margin-bottom:12px"><h1 style="margin:0">Popups</h1><button class="btn pri" onclick="aPopNew()">+ New popup</button></div><p class="mut" style="margin-bottom:12px">A popup opens on the merchant's screen the next time the merchant app is open.</p>
+ ${l.length?l.map(p=>`<div class="card" style="margin-bottom:10px"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(p.title)}</b><span class="mut">${adt(p.ts)}</span></div><p style="margin:6px 0">${esc(p.text)}</p><div class="mut">To: ${p.to==='all'?'All merchants':esc(p.toName||p.to)}</div><div class="abtn" style="margin-top:10px"><button class="btn line" onclick="aPopResend('${p.id}')">Send again</button><button class="btn line dng" onclick="aPopDel('${p.id}')">Delete</button></div></div>`).join(''):'<div class="card mut">No popups sent yet.</div>'}`;
+}
+function aPopNew(){
+ const ms=D.merchants.slice().sort((a,b)=>String(a.shop).localeCompare(String(b.shop)));
+ aSheet(`<div class="sheetf"><h3 class="fh">New popup</h3>${fld('pt','Title',{p:'e.g. Holiday notice'})}<label for="f_pm">Message</label><textarea id="f_pm" rows="4" placeholder="Write the message" style="width:100%;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:inherit;resize:vertical"></textarea><label for="f_pto">Send to</label><select id="f_pto"><option value="all">All merchants</option>${ms.map(m=>`<option value="${esc(m.phone)}">${esc(m.shop||m.name)} · ${esc(m.phone)}</option>`).join('')}</select><div id="aerr" class="err"></div><div class="two" style="margin-top:12px"><button class="btn line" onclick="aClose()">Cancel</button><button class="btn pri" onclick="aPopSend()">Send popup</button></div></div>`);
+}
+function aPopPost(title,text,to,toName){return net.add('popups',{title,text,to,toName:toName||'',ts:Date.now(),active:true})}
+function aPopSend(){
+ const t=v('pt'),m=v('pm'),to=$('#f_pto').value;
+ if(!t)return aerr('Enter a title.');if(!m)return aerr('Enter the message.');
+ const mm=D.merchants.find(x=>x.phone===to);
+ aPopPost(t,m,to,mm?(mm.shop||mm.name):'').then(()=>{aClose();atoast('Popup sent')}).catch(e=>aerr('Could not send: '+((e&&(e.code||e.message))||'')));
+}
+function aPopResend(id){const p=D.pops.find(x=>x.id===id);if(!p)return;aPopPost(p.title,p.text,p.to,p.toName).then(()=>atoast('Popup sent again')).catch(()=>atoast('Could not send'))}
+function aPopDel(id){net.del('popups',id).then(()=>atoast('Popup deleted')).catch(e=>atoast('Could not delete: '+((e&&(e.code||e.message))||'')))}
+function aInvHtml(ps,m,title){
+ const t=aTot(ps);
+ return `<div class="sheetf"><div style="display:flex;justify-content:space-between;align-items:center"><b class="st">${title}</b><span class="mut">${adt(Date.now())}</span></div>
+ <p class="mut" style="margin:4px 0 8px">${esc(m.shop)} · ${esc(m.name)} · ${esc(m.phone)}</p>
+ <div class="card" style="padding:6px 12px">${ps.map(p=>`<div class="tx"><div><b>${esc(p.oid)}</b> · ${esc(p.name)} · ${esc(p.phone)}<span>${esc(p.addr)}</span><span>${p.w} kg · ${esc((ZONE[p.z]||ZONE[0])[0])} · charge ${tk(chg(p).t)}</span></div><b>${tk(p.cod)}</b></div>`).join('')}</div>
+ <div class="card" style="margin-top:10px;padding:6px 12px"><div class="tx"><div>COD total</div><b>${tk(t.cod)}</b></div><div class="tx"><div>Delivery charges</div><b>${tk(t.ch)}</b></div><div class="tx"><div><b>Payable to merchant</b></div><b>${tk(t.cod-t.ch)}</b></div></div>
+ <button class="btn line full" style="margin-top:12px" onclick="aClose()">Close</button></div>`;
+}
+function aInv(qid){const q=D.requests.find(x=>x.id===qid);if(!q)return;const ps=aReqP(q);if(!ps.length)return atoast('No parcels in this request');const m=aMOf(q.mphone);aSheet(aInvHtml(ps,{shop:q.shop||m.shop,name:q.merchant||m.name,phone:q.mphone},'Invoice · pickup request'))}
+function aInvP(id){const p=D.parcels.find(x=>x.id===id);if(!p)return;const m=aMOf(p.mphone);aSheet(aInvHtml([p],{shop:p.shop||m.shop,name:p.merchant||m.name,phone:p.mphone},'Invoice · '+p.oid))}
+
+function aParcels(){return `<h1>Parcels</h1>${sbox('Search parcel ID, shop, customer or phone')}<div class="chips">${[['all','All'],['req','Requested'],['pickup','Pickup'],['ready','Ready'],['way','On the way'],['del','Delivered'],['ret','Returned'],['rej','Rejected'],['exch','Exchange']].map(([k,l])=>`<button class="chip ${A.pf===k?'on':''}" onclick="A.pf='${k}';aDraw()">${l}</button>`).join('')}</div><div id="alist">${aPList()}</div>`}
+function aMerch(){return `<div class="sh" style="align-items:center;margin-bottom:12px"><h1 style="margin:0">Merchants</h1><button class="btn pri" onclick="aAddM()">+ Add new merchant</button></div>${sbox('Search shop, name or phone')}<div id="alist" style="margin-top:12px">${aMList()}</div>`}
+function aRiders(){
+ const pend=D.apps.filter(a=>a.status==='pending');
+ return `<div class="sh" style="align-items:center;margin-bottom:12px"><h1 style="margin:0">Riders</h1><button class="btn pri" onclick="aAddR()">+ Add new rider</button></div>${pend.length?'<h2>Applications waiting</h2>'+pend.map(a=>`<div class="card" style="margin-bottom:12px"><div class="appf"><img src="${a.photo}" alt="Photo"><div><b>${esc(a.name)}</b><span>${a.phone}</span><span>${esc(a.zone)}</span><span>${esc(a.docType)} · ${adt(a.submittedAt)}</span></div></div><button class="chip" onclick="A.view={t:'r',id:'${a.id}'};aDraw()">Open profile</button> <button class="chip" onclick="aDocView('${a.id}')">View document</button>${a.license?` <button class="chip" onclick="aDocView('${a.id}',1)">View driving license</button>`:''}<div class="abtn" style="margin-top:12px"><button class="btn pri" onclick="aKyc('${a.id}','verified')">Approval</button><button class="btn line" onclick="aKyc('${a.id}','rejected')">Reject</button><button class="btn line dng" onclick="aRDel('${a.id}')">Delete</button></div></div>`).join(''):''}<h2>All riders</h2>${sbox('Search name, phone or area')}<div id="alist" style="margin-top:12px">${aRList()}</div>`;
+}
+
+/* detail pages */
+function aParcelV(key){
+ const p=D.parcels.find(x=>x.id===key);if(!p)return aBack()+'<div class="card mut">Parcel not found.</div>';
+ const c=chg(p),st=p.stage||'created',ev=D.events.filter(e=>e.key===key).sort((a,b)=>a.ts-b.ts),l=slab(p),rq=D.requests.find(r=>r.status==='open'&&(r.parcelKey===key||(r.parcelIds||[]).includes(key)));
+ const rn=x=>x?esc(x.name)+' · '+x.phone:'Not assigned';
+ let act='';
+ if(rq)act=`<button class="btn pri full" onclick="aAssign('pickup','${rq.id}')">Send pickup to rider</button>`;
+ else if(['picked_up','delivery_assigned','delivery_update'].includes(st)&&!['del','ret','exch'].includes(p.s))act=`<button class="btn pri full" onclick="aAssign('delivery','${p.id}')">${st==='picked_up'?'Send to delivery rider':'Resend to another rider'}</button>`;
+ const row=(a,b)=>`<div class="tx"><div>${a}<span>${b}</span></div></div>`;
+ return `${aBack()}<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h1 style="margin:0">${esc(p.oid)}</h1><span class="tag ${l[1]}">${l[0]}</span></div>
+ <div style="margin:12px 0">${act}</div><p style="margin:0 0 10px"><button class="chip" onclick="aInvP('${p.id}')">View invoice</button></p>
+ <div class="card pf">${row('Merchant',esc(p.shop)+' · '+esc(p.merchant)+' · '+p.mphone)}${row('Customer',esc(p.name)+' · '+esc(p.phone))}${row('Address',esc(p.addr))}${row('Weight · Zone',p.w+' kg · '+(ZONE[p.z]||ZONE[0])[0])}${row('COD amount',tk(p.cod))}${row('Delivery charge',tk(c.t))}${row('Pickup rider',rn(p.pickupRider))}${row('Delivery rider',rn(p.deliveryRider))}${p.note?row('Rider note',esc(p.note)):''}${row('Created',adt(p.ts))}</div>
+ <p><button class="chip" onclick="A.view={t:'m',id:'${p.mphone}'};aDraw()">Open merchant profile</button></p>
+ <h2>Timeline</h2><div class="card pf">${ev.length?ev.map(e=>`<div class="tx"><div>${esc(e.text)}<span>${esc(e.by||'')} · ${adt(e.ts)}</span></div></div>`).join(''):'<p class="mut" style="padding:12px 0">No updates yet.</p>'}</div>`;
+}
+function aMerchantV(ph){
+ const m=D.merchants.find(x=>x.phone===ph);if(!m)return aBack()+'<div class="card mut">Merchant not found.</div>';
+ const ps=D.parcels.filter(p=>p.mphone===ph).sort((a,b)=>b.ts-a.ts),w=walletOf(ps),row=(a,b)=>`<div class="tx"><div>${a}<span>${esc(b||'Not set')}</span></div></div>`,tl=(n,l)=>`<div class="card ast"><b>${tk(n)}</b><span>${l}</span></div>`;
+ return `${aBack()}<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><div class="av" style="width:60px;height:60px;font-size:20px">${ini(m.shop||m.name||'M')}</div><div style="flex:1;min-width:180px"><h1 style="margin:0">${esc(m.shop)}</h1><span class="mut">${esc(m.name)} · ${m.phone}</span></div><span class="tag ${m.blocked?'t-bad':'t-ok'}">${m.blocked?'Blocked':'Active'}</span></div>
+ <div style="margin:14px 0"><button class="btn ${m.blocked?'pri':'line'}" onclick="aBlock('merchants','${m.phone}',${!m.blocked})">${m.blocked?'Unblock merchant':'Block merchant'}</button> <button class="btn line" style="color:var(--bad);border-color:var(--bad)" onclick="aMDel('${m.phone}')">Delete merchant</button></div>
+ <h2>Account</h2><div class="card pf">${row('Merchant name',m.name)}${row('Shop name',m.shop)}${row('Mobile number',m.phone)}${row('Pickup address',m.pickup)}${row('Payment method',m.pay)}${row('Facebook page',m.fb)}${row('Notifications','SMS '+(m.sms?'on':'off')+' · Push '+(m.push?'on':'off'))}${row('Reward points',String(m.points||0))}${row('Joined',adt(m.joined))}${row('Last active',adt(m.lastSeen))}</div>
+ <h2>Wallet</h2><div class="agrid">${tl(w.bal,'Balance (COD − charges)')}${tl(w.coll,'COD collected')}${tl(w.ch,'Delivery charges')}${tl(w.tr,'COD in transit')}</div>
+ <h2>Deliveries</h2><div class="card">${catGrid(ps)}</div>
+ <h2>Parcels (${ps.length})</h2>${ps.length?ps.map(prow).join(''):'<div class="card mut">No parcels yet.</div>'}
+ <h2>Support messages</h2><div class="card pf">${m.msgs&&m.msgs.length?m.msgs.slice().reverse().map(t=>`<div class="tx"><div>${esc(t)}</div></div>`).join(''):'<p class="mut" style="padding:12px 0">No messages.</p>'}</div>`;
+}
+function aRiderV(ph){
+ const r=aRiderOf(ph);if(!r)return aBack()+'<div class="card mut">Rider not found.</div>';
+ const a=D.apps.find(x=>x.id===ph||x.phone===ph),ns=D.notices.filter(n=>n.to===ph),row=(x,y)=>`<div class="tx"><div>${x}<span>${esc(y||'Not set')}</span></div></div>`;
+ const pk=ns.filter(n=>n.type==='pickup'),dl=ns.filter(n=>n.type==='delivery'),c=k=>dl.filter(n=>n.status===k).length;
+ const kt=r.blocked?['Blocked','t-bad']:r.kyc==='verified'?['Verified','t-ok']:r.kyc==='rejected'?['Rejected','t-bad']:['Pending','t-wait'];
+ return `${aBack()}<div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">${a&&a.photo?`<img class="avi" src="${a.photo}" alt="" style="width:64px;height:64px">`:`<div class="av" style="width:64px;height:64px;font-size:22px">${ini(r.name||'R')}</div>`}<div style="flex:1;min-width:180px"><h1 style="margin:0">${esc(r.name)}</h1><span class="mut">${r.phone} · ${esc(r.zone||'')}</span></div><span class="tag ${kt[1]}">${kt[0]}</span></div>
+ <div class="abtn" style="margin:14px 0">${r.kyc==='verified'?`<button class="btn ${r.blocked?'pri':'line'}" onclick="aBlock('riders','${r.id||ph}',${!r.blocked})">${r.blocked?'Unblock rider':'Block rider'}</button>`:`<button class="btn pri" onclick="aKyc('${ph}','verified')">Approval</button>${r.kyc==='rejected'?'':`<button class="btn line" onclick="aKyc('${ph}','rejected')">Reject</button>`}`}<button class="btn line dng" onclick="aRDel('${ph}')">Delete</button></div>
+ <div class="abtn" style="margin:-4px 0 14px"><button class="btn line" onclick="aRPass('${ph}')">Change password</button><button class="btn line" onclick="aRNum('${ph}')">Change number</button></div>
+ <h2>Details</h2><div class="card pf">${row('Name',r.name)}${row('Mobile number',r.phone)}${row('Delivery area',r.zone)}${row('Status',r.online?'Online':'Offline')}${row('Joined',adt(r.joined))}${row('Document',a&&a.docType)}</div>
+ ${a&&a.doc?`<h2>Document</h2><img class="docp" style="max-height:340px" src="${a.doc}" alt="Document">`:''}${a&&a.license?`<h2>Driving license</h2><img class="docp" style="max-height:340px" src="${a.license}" alt="Driving license">`:''}
+ <h2>Work summary</h2><div class="agrid"><div class="card ast"><b>${pk.length}</b><span>Pickups assigned</span></div><div class="card ast"><b>${pk.filter(n=>n.status==='picked').length}</b><span>Pickups done</span></div><div class="card ast"><b>${dl.length}</b><span>Deliveries assigned</span></div><div class="card ast"><b>${c('del')}</b><span>Delivered</span></div><div class="card ast"><b>${c('ret')}</b><span>Returned</span></div><div class="card ast"><b>${c('exch')}</b><span>Exchange</span></div></div>
+ <h2>Recent tasks</h2>${ns.length?ns.slice().sort((x,y)=>y.ts-x.ts).slice(0,8).map(n=>`<div class="card" style="margin-bottom:8px"><b>${n.type==='delivery'?'Delivery':'Pickup'}</b> <span class="mut">${adt(n.ts)}</span><div class="mut">${esc(n.text||'')}</div><div class="mut">Status: ${esc(n.status||'new')}${n.note?' — '+esc(n.note):''}</div></div>`).join(''):'<div class="card mut">No tasks yet.</div>'}`;
+}
+
+/* actions */
+const aBlock=(c,id,b)=>net.merge(c,id,{blocked:b}).then(()=>atoast(b?'Blocked':'Unblocked')).catch(()=>atoast('Could not update'));
+const CRED=['salt','hash','password','pw','pass'];
+async function aKyc(ph,st){
+ const a=D.apps.find(x=>x.id===ph||x.phone===ph),r=D.riders.find(x=>x.phone===ph);
+ try{
+  if(a)await net.merge('rider_applications',a.id,{status:st});
+  if(r)await net.merge('riders',r.id,{kyc:st});
+  else if(a){const o={name:a.name||'',phone:ph,zone:a.zone||'',kyc:st,online:false,blocked:false,joined:a.submittedAt||Date.now()};['district','upazila','union'].forEach(k=>{if(a[k]!=null)o[k]=a[k]});CRED.forEach(k=>{if(a[k]!=null)o[k]=a[k]});await net.merge('riders',ph,o)}
+  atoast(st==='verified'?'Rider approved':'Application rejected');
+ }catch(e){atoast('Could not update: '+((e&&(e.code||e.message))||''))}
+}
+function aMDel(ph){
+ const m=D.merchants.find(x=>x.phone===ph);if(!m)return;
+ aSheet(`<b class="st">Delete this merchant?</b><p class="mut">${esc(m.shop)} · ${esc(ph)}<br>All of this merchant's data (profile, parcels, pickup requests, withdrawals, messages) will be erased permanently. The same number can register a new account afterwards.</p><div class="two"><button class="btn line" onclick="aClose()">Cancel</button><button class="btn pri" style="background:var(--bad);border-color:var(--bad)" onclick="aMDelGo('${ph}')">Delete forever</button></div>`);
+}
+async function aMDelGo(ph){
+ const m=D.merchants.find(x=>x.phone===ph),mid=(m&&m.id)||ph;
+ const items=[['merchants',mid]];
+ D.parcels.filter(x=>x.mphone===ph).forEach(x=>items.push(['parcels',x.id]));
+ D.requests.filter(x=>x.mphone===ph).forEach(x=>items.push(['requests',x.id]));
+ D.wd.filter(x=>x.mphone===ph||x.ph===ph).forEach(x=>items.push(['withdrawals',x.id]));
+ D.chats.filter(x=>x.mphone===ph).forEach(x=>items.push(['chats',x.id]));
+ D.notices.filter(x=>x.to===ph||x.mphone===ph).forEach(x=>items.push(['notices',x.id]));
+ let soft=0;
+ try{
+  await Promise.all(items.map(async([c,id])=>{
+   try{await net.del(c,id)}
+   catch(e){ /* rules refuse real delete: hide the record instead */
+    try{await net.merge(c,id,{deleted:true,blocked:true})}catch(e2){if(c==='merchants')throw e2}
+    soft++}
+  }));
+  aClose();A.view=null;
+  D.merchants=D.merchants.filter(x=>x.phone!==ph);
+  ['parcels','requests','wd','chats','notices'].forEach(k=>{D[k]=D[k].filter(x=>!(x.mphone===ph||x.to===ph||x.ph===ph))});
+  atoast(soft?'Merchant deleted (set Firestore rules delete: true to erase fully)':'Merchant and all data deleted');aDraw();
+ }catch(e){aClose();atoast('Could not delete: '+((e&&(e.code||e.message))||''))}
+}
+function aRDel(ph){
+ const r=aRiderOf(ph);
+ aSheet(`<b class="st">Delete this rider?</b><p class="mut">${esc(r&&r.name)} · ${esc(ph)}<br>The account and its documents will be removed permanently.</p><div class="two"><button class="btn line" onclick="aClose()">Cancel</button><button class="btn pri" style="background:var(--bad);border-color:var(--bad)" onclick="aRDelGo('${ph}')">Delete</button></div>`);
+}
+async function aRDelGo(ph){
+ try{
+  const a=D.apps.find(x=>x.id===ph||x.phone===ph),r=D.riders.find(x=>x.phone===ph);
+  try{await Promise.all([a?net.del('rider_applications',a.id):0,r?net.del('riders',r.id):0])}
+  catch(e){await Promise.all([a?net.merge('rider_applications',a.id,{status:'deleted',deleted:true}):0,net.merge('riders',(r&&r.id)||ph,{deleted:true,blocked:true,online:false,kyc:'rejected'})])}
+  aClose();A.view=null;
+  D.riders=D.riders.filter(x=>x.phone!==ph);D.apps=D.apps.filter(x=>x.id!==ph&&x.phone!==ph);
+  atoast('Rider deleted');aDraw();
+ }catch(e){aClose();atoast('Could not delete: '+((e&&(e.code||e.message))||''))}
+}
+function aRPass(ph){
+ aSheet(`<div class="sheetf"><h3 class="fh">Change rider password</h3><p class="mut">${esc(ph)}</p>${pwf('np','New password (at least 6 characters)')}<div id="aerr" class="err"></div><div class="two" style="margin-top:12px"><button class="btn line" onclick="aClose()">Cancel</button><button class="btn pri" onclick="aRPassGo('${ph}')">Save password</button></div></div>`);
+}
+async function aRPassGo(ph){
+ const pw=$('#f_np').value;if(pw.length<6)return aerr('Password must be at least 6 characters.');
+ const salt=Math.random().toString(36).slice(2),hash=await sha(salt+pw);
+ const a=D.apps.find(x=>x.id===ph||x.phone===ph),r=D.riders.find(x=>x.phone===ph);
+ const upd=d=>{const o={};if(!d||(d.hash==null&&d.password==null&&d.pw==null&&d.pass==null)){o.salt=salt;o.hash=hash}else{if(d.hash!=null){o.salt=salt;o.hash=hash}['password','pw','pass'].forEach(k=>{if(d[k]!=null)o[k]=pw})}return o};
+ try{
+  await net.merge('riders',(r&&r.id)||ph,upd(r));
+  if(a)await net.merge('rider_applications',a.id,upd(a));
+  aClose();atoast('Password changed');
+ }catch(e){aerr('Could not save: '+((e&&(e.code||e.message))||''))}
+}
+function aRNum(ph){
+ aSheet(`<div class="sheetf"><h3 class="fh">Change rider number</h3><p class="mut">Current: ${esc(ph)}</p>${fld('nn','New mobile number',{p:'01XXXXXXXXX',m:'numeric',t:'tel'})}<div id="aerr" class="err"></div><div class="two" style="margin-top:12px"><button class="btn line" onclick="aClose()">Cancel</button><button class="btn pri" onclick="aRNumGo('${ph}')">Save number</button></div></div>`);
+}
+async function aRNumGo(ph){
+ const n=v('nn');
+ if(!okPhone(n))return aerr('Enter a valid 11-digit mobile number (01XXXXXXXXX).');
+ if(n===ph)return aerr('This is already the current number.');
+ if(D.riders.some(x=>x.phone===n)||D.apps.some(x=>x.id===n||x.phone===n))return aerr('A rider with this number already exists.');
+ const a=D.apps.find(x=>x.id===ph||x.phone===ph),r=D.riders.find(x=>x.phone===ph);
+ try{
+  if(r){const o={...r};delete o.id;o.phone=n;await net.set('riders',n,o);await net.del('riders',r.id)}
+  if(a){const o={...a};o.id=n;o.phone=n;await net.set('rider_applications',n,o);await net.del('rider_applications',a.id)}
+  await Promise.all(D.notices.filter(x=>x.to===ph).map(x=>net.merge('notices',x.id,{to:n})));
+  aClose();A.view={t:'r',id:n};atoast('Number changed');aDraw();
+ }catch(e){aerr('Could not save: '+((e&&(e.code||e.message))||''))}
+}
+function aDocView(ph,lic){const a=D.apps.find(x=>x.id===ph);if(!a)return;aSheet(`<b class="st">${lic?'Driving license':esc(a.docType)}</b><p class="mut">${esc(a.name)} · ${a.phone}</p><img class="docp" style="max-height:60vh" src="${lic?a.license:a.doc}" alt="Document"><button class="btn line full" onclick="aClose()">Close</button>`)}
+function aAssign(kind,id){
+ const rs=D.riders.filter(r=>r.kyc==='verified'&&!r.blocked).sort((a,b)=>(b.online?1:0)-(a.online?1:0));
+ aSheet(`<div class="sheetf"><b class="st">${kind==='pickup'?'Send pickup to rider':'Send delivery to rider'}</b><p class="mut">Select a rider, then tap Send. The task appears on the rider's app immediately.</p>${rs.length?rs.map((r,i)=>`<label class="tx" style="cursor:pointer;margin:0"><input type="radio" name="rsel" value="${r.phone}" ${i===0?'checked':''} style="width:22px;height:22px;padding:0;margin-right:12px;accent-color:var(--pri);flex:none"><div style="flex:1">${esc(r.name)} ${r.online?'<span class="tag t-ok">Online</span>':'<span class="tag t-way">Offline</span>'}<span>${r.phone} · ${esc(r.zone||'')}</span></div></label>`).join(''):'<p class="mut" style="padding:14px 0">No verified riders yet. Approve a rider application in the Riders tab first.</p>'}<div class="two" style="margin-top:14px"><button class="btn line" onclick="aClose()">Close</button>${rs.length?`<button class="btn pri" onclick="aSend('${kind}','${id}')">Send</button>`:''}</div></div>`);
+}
+function aSend(kind,id){const el=$('input[name=rsel]:checked');if(!el)return atoast('Select a rider first');aDo(kind,id,el.value)}
+function aDo(kind,id,rph){
+ const r=D.riders.find(x=>x.phone===rph);if(!r)return;
+ const fail=e=>atoast('Could not send: '+((e&&(e.code||e.message))||''));
+ if(kind==='pickup'){
+  const q=D.requests.find(x=>x.id===id);if(!q)return;
+  const ps=aReqP(q),ids=ps.map(p=>p.id),t=aTot(ps);
+  net.add('notices',{to:rph,type:'pickup',reqId:q.id,parcelKey:ids.length===1?ids[0]:(q.parcelKey||null),parcelIds:ids,parcel:ids.length===1?ps[0].oid:null,shop:q.shop||'',merchant:q.merchant||'',mphone:q.mphone||'',addr:q.addr||'',cod:ps.length?t.cod:(q.cod==null?null:q.cod),text:'Pickup from '+(q.shop||'merchant')+' · '+(ps.length||q.parcels||1)+' parcel'+((ps.length||q.parcels||1)>1?'s':'')+(q.slot?' · '+q.slot:''),ts:Date.now(),read:false,status:'new'})
+   .then(()=>{net.merge('requests',q.id,{status:'assigned',riderPhone:rph,riderName:r.name}).catch(()=>{});
+    ids.forEach(pid=>{net.merge('parcels',pid,{stage:'pickup_assigned',pickupRider:{name:r.name,phone:r.phone},rider:r.name,riderPhone:r.phone}).catch(()=>{});evt(pid,'Pickup rider assigned: '+r.name,'Admin')});
+    atoast('Sent to '+r.name)}).catch(fail);
+ }else{
+  const p=D.parcels.find(x=>x.id===id);if(!p)return;
+  net.add('notices',{to:rph,type:'delivery',parcelKey:p.id,parcel:p.oid||'',shop:p.shop||'',merchant:p.merchant||'',mphone:p.mphone||'',customer:p.name||'',cphone:p.phone||'',caddr:p.addr||'',addr:p.addr||'',cod:p.cod,text:'Deliver parcel '+p.oid+' to '+p.name,ts:Date.now(),read:false,status:'new'})
+   .then(()=>{net.merge('parcels',p.id,{stage:'delivery_assigned',deliveryRider:{name:r.name,phone:r.phone},rider:r.name,riderPhone:r.phone}).catch(()=>{});evt(p.id,'Delivery rider assigned: '+r.name,'Admin');atoast('Sent to '+r.name)}).catch(fail);
+ }
+ aClose();
+}
+
+/* add merchant / rider (admin) */
+const GEO_RAW=`Bagerhat:Bagerhat Sadar,Chitalmari,Fakirhat,Kachua,Mollahat,Mongla,Morrelganj,Rampal,Sarankhola
+Bandarban:Bandarban Sadar,Alikadam,Lama,Naikhongchhari,Rowangchhari,Ruma,Thanchi
+Barguna:Barguna Sadar,Amtali,Bamna,Betagi,Patharghata,Taltali
+Barishal:Barishal Sadar,Agailjhara,Babuganj,Bakerganj,Banaripara,Gaurnadi,Hizla,Mehendiganj,Muladi,Wazirpur
+Bhola:Bhola Sadar,Burhanuddin,Char Fasson,Daulatkhan,Lalmohan,Manpura,Tazumuddin
+Bogura:Bogura Sadar,Adamdighi,Dhunat,Dhupchanchia,Gabtali,Kahaloo,Nandigram,Sariakandi,Shajahanpur,Sherpur,Shibganj,Sonatala
+Brahmanbaria:Brahmanbaria Sadar,Akhaura,Ashuganj,Bancharampur,Bijoynagar,Kasba,Nabinagar,Nasirnagar,Sarail
+Chandpur:Chandpur Sadar,Faridganj,Haimchar,Hajiganj,Kachua,Matlab Dakshin,Matlab Uttar,Shahrasti
+Chapainawabganj:Chapainawabganj Sadar,Bholahat,Gomastapur,Nachole,Shibganj
+Chattogram:Kotwali,Panchlaish,Double Mooring,Pahartali,Khulshi,Bayazid,Chandgaon,Bakalia,Halishahar,Patenga,Bandar,Anwara,Banshkhali,Boalkhali,Chandanaish,Fatikchhari,Hathazari,Karnaphuli,Lohagara,Mirsharai,Patiya,Rangunia,Raozan,Sandwip,Satkania,Sitakunda
+Chuadanga:Chuadanga Sadar,Alamdanga,Damurhuda,Jibannagar
+Cox's Bazar:Cox's Bazar Sadar,Chakaria,Eidgaon,Kutubdia,Maheshkhali,Pekua,Ramu,Teknaf,Ukhia
+Cumilla:Cumilla Sadar,Adarsha Sadar,Barura,Brahmanpara,Burichang,Chandina,Chauddagram,Daudkandi,Debidwar,Homna,Laksam,Lalmai,Meghna,Monohargonj,Muradnagar,Nangalkot,Titas
+Dhaka:Dhanmondi,Mohammadpur,Mirpur,Pallabi,Kafrul,Uttara,Gulshan,Banani,Badda,Rampura,Khilgaon,Motijheel,Paltan,Sabujbagh,Jatrabari,Demra,Kamrangirchar,Lalbagh,Hazaribagh,Kotwali,Sutrapur,Tejgaon,Tejgaon Industrial,Cantonment,Khilkhet,Turag,Bhashantek,Savar,Dhamrai,Keraniganj,Nawabganj,Dohar
+Dinajpur:Dinajpur Sadar,Birampur,Birganj,Biral,Bochaganj,Chirirbandar,Fulbari,Ghoraghat,Hakimpur,Kaharole,Khansama,Nawabganj,Parbatipur
+Faridpur:Faridpur Sadar,Alfadanga,Bhanga,Boalmari,Charbhadrasan,Madhukhali,Nagarkanda,Sadarpur,Saltha
+Feni:Feni Sadar,Chhagalnaiya,Daganbhuiyan,Fulgazi,Parshuram,Sonagazi
+Gaibandha:Gaibandha Sadar,Fulchhari,Gobindaganj,Palashbari,Sadullapur,Saghata,Sundarganj
+Gazipur:Gazipur Sadar,Kaliakair,Kaliganj,Kapasia,Sreepur,Tongi
+Gopalganj:Gopalganj Sadar,Kashiani,Kotalipara,Muksudpur,Tungipara
+Habiganj:Habiganj Sadar,Ajmiriganj,Bahubal,Baniachong,Chunarughat,Lakhai,Madhabpur,Nabiganj,Shayestaganj
+Jamalpur:Jamalpur Sadar,Bakshiganj,Dewanganj,Islampur,Madarganj,Melandaha,Sarishabari
+Jashore:Jashore Sadar,Abhaynagar,Bagherpara,Chaugachha,Jhikargachha,Keshabpur,Manirampur,Sharsha
+Jhalakathi:Jhalakathi Sadar,Kathalia,Nalchity,Rajapur
+Jhenaidah:Jhenaidah Sadar,Harinakunda,Kaliganj,Kotchandpur,Maheshpur,Shailkupa
+Joypurhat:Joypurhat Sadar,Akkelpur,Kalai,Khetlal,Panchbibi
+Khagrachhari:Khagrachhari Sadar,Dighinala,Lakshmichhari,Mahalchhari,Manikchhari,Matiranga,Panchhari,Ramgarh
+Khulna:Khulna Sadar,Sonadanga,Khalishpur,Daulatpur,Khan Jahan Ali,Batiaghata,Dacope,Dumuria,Dighalia,Koyra,Paikgachha,Phultala,Rupsa,Terokhada
+Kishoreganj:Kishoreganj Sadar,Austagram,Bajitpur,Bhairab,Hossainpur,Itna,Karimganj,Katiadi,Kuliarchar,Mithamain,Nikli,Pakundia,Tarail
+Kurigram:Kurigram Sadar,Bhurungamari,Char Rajibpur,Chilmari,Phulbari,Nageshwari,Rajarhat,Raomari,Ulipur
+Kushtia:Kushtia Sadar,Bheramara,Daulatpur,Khoksa,Kumarkhali,Mirpur
+Lakshmipur:Lakshmipur Sadar,Kamalnagar,Raipur,Ramganj,Ramgati
+Lalmonirhat:Lalmonirhat Sadar,Aditmari,Hatibandha,Kaliganj,Patgram
+Madaripur:Madaripur Sadar,Kalkini,Rajoir,Shibchar
+Magura:Magura Sadar,Mohammadpur,Shalikha,Sreepur
+Manikganj:Manikganj Sadar,Daulatpur,Ghior,Harirampur,Saturia,Shivalaya,Singair
+Meherpur:Meherpur Sadar,Gangni,Mujibnagar
+Moulvibazar:Moulvibazar Sadar,Barlekha,Juri,Kamalganj,Kulaura,Rajnagar,Sreemangal
+Munshiganj:Munshiganj Sadar,Gazaria,Lohajang,Sirajdikhan,Sreenagar,Tongibari
+Mymensingh:Mymensingh Sadar,Bhaluka,Dhobaura,Fulbaria,Gaffargaon,Gauripur,Haluaghat,Ishwarganj,Muktagachha,Nandail,Phulpur,Tarakanda,Trishal
+Naogaon:Naogaon Sadar,Atrai,Badalgachhi,Dhamoirhat,Manda,Mahadebpur,Niamatpur,Patnitala,Porsha,Raninagar,Sapahar
+Narail:Narail Sadar,Kalia,Lohagara
+Narayanganj:Narayanganj Sadar,Araihazar,Bandar,Rupganj,Sonargaon,Fatullah,Siddhirganj
+Narsingdi:Narsingdi Sadar,Belabo,Monohardi,Palash,Raipura,Shibpur
+Natore:Natore Sadar,Bagatipara,Baraigram,Gurudaspur,Lalpur,Singra
+Netrokona:Netrokona Sadar,Atpara,Barhatta,Durgapur,Kalmakanda,Kendua,Khaliajuri,Madan,Mohanganj,Purbadhala
+Nilphamari:Nilphamari Sadar,Dimla,Domar,Jaldhaka,Kishoreganj,Saidpur
+Noakhali:Noakhali Sadar,Begumganj,Chatkhil,Companiganj,Hatiya,Kabirhat,Senbagh,Sonaimuri,Subarnachar
+Pabna:Pabna Sadar,Atgharia,Bera,Bhangura,Chatmohar,Faridpur,Ishwardi,Santhia,Sujanagar
+Panchagarh:Panchagarh Sadar,Atwari,Boda,Debiganj,Tentulia
+Patuakhali:Patuakhali Sadar,Bauphal,Dashmina,Dumki,Galachipa,Kalapara,Mirzaganj,Rangabali
+Pirojpur:Pirojpur Sadar,Bhandaria,Kawkhali,Mathbaria,Nazirpur,Nesarabad,Zianagar
+Rajbari:Rajbari Sadar,Baliakandi,Goalanda,Kalukhali,Pangsha
+Rajshahi:Boalia,Motihar,Rajpara,Shah Makhdum,Bagha,Bagmara,Charghat,Durgapur,Godagari,Mohanpur,Paba,Puthia,Tanore
+Rangamati:Rangamati Sadar,Baghaichhari,Barkal,Belaichhari,Juraichhari,Kaptai,Kawkhali,Langadu,Naniarchar,Rajasthali
+Rangpur:Rangpur Sadar,Badarganj,Gangachara,Kaunia,Mithapukur,Pirgachha,Pirganj,Taraganj
+Satkhira:Satkhira Sadar,Assasuni,Debhata,Kalaroa,Kaliganj,Shyamnagar,Tala
+Shariatpur:Shariatpur Sadar,Bhedarganj,Damudya,Gosairhat,Naria,Zajira
+Sherpur:Sherpur Sadar,Jhenaigati,Nakla,Nalitabari,Sreebardi
+Sirajganj:Sirajganj Sadar,Belkuchi,Chauhali,Kamarkhanda,Kazipur,Raiganj,Shahjadpur,Tarash,Ullahpara
+Sunamganj:Sunamganj Sadar,Bishwamvarpur,Chhatak,Dakshin Sunamganj,Derai,Dharampasha,Dowarabazar,Jagannathpur,Jamalganj,Sullah,Tahirpur
+Sylhet:Sylhet Sadar,Balaganj,Beanibazar,Bishwanath,Companiganj,Dakshin Surma,Fenchuganj,Golapganj,Gowainghat,Jaintiapur,Kanaighat,Osmani Nagar,Zakiganj
+Tangail:Tangail Sadar,Basail,Bhuapur,Delduar,Dhanbari,Ghatail,Gopalpur,Kalihati,Madhupur,Mirzapur,Nagarpur,Sakhipur
+Thakurgaon:Thakurgaon Sadar,Baliadangi,Haripur,Pirganj,Ranisankail`;
+const GEO={};GEO_RAW.split('\n').forEach(l=>{const i=l.indexOf(':');GEO[l.slice(0,i)]=l.slice(i+1).split(',')});
+const AF={};
+const pwf=(id,p)=>`<label for="f_${id}">Password</label><div class="pwx"><input id="f_${id}" type="password" placeholder="${p}" autocomplete="new-password"><button type="button" onclick="const i=$('#f_${id}');i.type=i.type==='password'?'text':'password'" aria-label="Show or hide password">${ic('eye')}</button></div>`;
+const upl=(id,t,sub)=>`<label class="upl"><div class="pl" id="pv_${id}">+</div><div><b>${t}</b><span id="ps_${id}">${sub}</span></div><input type="file" accept="image/*" onchange="aPick('${id}',this)"></label>`;
+function aPick(id,el){
+ const f=el.files&&el.files[0];if(!f)return;
+ const rd=new FileReader();
+ rd.onload=()=>{const im=new Image();im.onload=()=>{
+  const M=720,k=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+  c.getContext('2d').drawImage(im,0,0,c.width,c.height);
+  AF[id]=c.toDataURL('image/jpeg',.72);
+  $('#pv_'+id).innerHTML='<img src="'+AF[id]+'" alt="">';$('#ps_'+id).textContent='Selected · tap to change';
+ };im.onerror=()=>aerr('This image could not be read.');im.src=rd.result};
+ rd.readAsDataURL(f);
+}
+function aGeo(){
+ const d=$('#f_rd').value,u=$('#f_ru');
+ u.innerHTML='<option value="">Select upazila / থানা</option>'+(GEO[d]||[]).map(x=>`<option>${esc(x)}</option>`).join('');
+}
+function aAddM(){
+ aSheet(`<div class="sheetf"><h3 class="fh">Create merchant account</h3>${fld('mn','Merchant name',{p:'Your full name'})}${fld('ms','Shop name',{p:'Your shop or page name'})}${fld('mp','Mobile number',{p:'01XXXXXXXXX',m:'numeric',t:'tel'})}${pwf('mw','At least 6 characters')}<div id="aerr" class="err"></div><div class="two" style="margin-top:12px"><button class="btn line" onclick="aClose()">Cancel</button><button class="btn pri" onclick="aSaveM()">Create account</button></div></div>`);
+}
+async function aSaveM(){
+ const name=v('mn'),shop=v('ms'),phone=v('mp'),pw=$('#f_mw').value;
+ if(!name)return aerr('Enter the merchant name.');
+ if(!shop)return aerr('Enter the shop name.');
+ if(!okPhone(phone))return aerr('Enter a valid 11-digit mobile number (01XXXXXXXXX).');
+ if(pw.length<6)return aerr('Password must be at least 6 characters.');
+ if(D.merchants.some(m=>m.phone===phone))return aerr('A merchant with this number already exists.');
+ const salt=Math.random().toString(36).slice(2),hash=await sha(salt+pw);
+ net.set('merchants',phone,{id:phone,mn:name,sn:shop,ph:phone,ts:Date.now(),shop,name,phone,salt,hash,pickup:'',pay:'',fb:'',sms:true,push:true,points:0,blocked:false,joined:Date.now(),lastSeen:null,addedBy:'Admin'})
+  .then(()=>{aClose();atoast('Merchant added')}).catch(e=>aerr('Could not save: '+((e&&(e.code||e.message))||'try again')));
+}
+function aAddR(){
+ delete AF.rp;delete AF.rd;delete AF.rl;
+ const ds=Object.keys(GEO).sort();
+ aSheet(`<div class="sheetf"><h3 class="fh">Create rider account</h3>${fld('rn','Full name',{p:'Your full name'})}${fld('rp','Mobile number',{p:'01XXXXXXXXX',m:'numeric',t:'tel'})}
+ <label for="f_rd">Delivery area — District</label><select id="f_rd" onchange="aGeo()"><option value="">Select district</option>${ds.map(x=>`<option>${esc(x)}</option>`).join('')}</select>
+ <label for="f_ru">Upazila / থানা</label><select id="f_ru"><option value="">Select upazila / থানা</option></select>
+ ${fld('rv','Union / Village / Area (optional)',{p:'Union, village or ward name'})}${pwf('rw','At least 6 characters')}
+ <label style="margin-bottom:6px">Your photo</label>${upl('rp','Your photo','Clear face photo')}
+ <label for="f_rt">Document type</label><select id="f_rt"><option>NID card</option><option>Birth certificate</option></select>
+ <div style="height:12px"></div>${upl('rd','NID or birth certificate','Photo of the front side')}
+ <label style="margin-bottom:6px">Driving license</label>${upl('rl','Driving license','Photo of the front side')}
+ <div id="aerr" class="err"></div><div class="two" style="margin-top:12px"><button class="btn line" onclick="aClose()">Cancel</button><button class="btn pri" onclick="aSaveR()">Create rider account</button></div></div>`);
+}
+async function aSaveR(){
+ const name=v('rn'),phone=v('rp'),dist=$('#f_rd').value,up=$('#f_ru').value,un=v('rv'),pw=$('#f_rw').value,dt=$('#f_rt').value;
+ if(!name)return aerr('Enter the full name.');
+ if(!okPhone(phone))return aerr('Enter a valid 11-digit mobile number (01XXXXXXXXX).');
+ if(!dist)return aerr('Select the district.');
+ if(!up)return aerr('Select the upazila / থানা.');
+ if(pw.length<6)return aerr('Password must be at least 6 characters.');
+ if(!AF.rp)return aerr('Upload the rider photo.');
+ if(!AF.rd)return aerr('Upload the NID or birth certificate photo.');
+ if(!AF.rl)return aerr('Upload the driving license photo.');
+ if(D.riders.some(r=>r.phone===phone))return aerr('A rider with this number already exists.');
+ const zone=[un,up,dist].filter(Boolean).join(', '),salt=Math.random().toString(36).slice(2),hash=await sha(salt+pw),now=Date.now();
+ try{
+  await net.set('rider_applications',phone,{id:phone,name,phone,zone,district:dist,upazila:up,union:un,docType:dt,photo:AF.rp,doc:AF.rd,license:AF.rl,status:'verified',submittedAt:now,addedBy:'Admin'});
+  await net.set('riders',phone,{name,phone,zone,district:dist,upazila:up,union:un,salt,hash,kyc:'verified',online:false,blocked:false,joined:now,addedBy:'Admin'});
+  delete AF.rp;delete AF.rd;delete AF.rl;aClose();atoast('Rider added');
+ }catch(e){aerr('Could not save: '+((e&&(e.code||e.message))||'photos may be too large'))}
+}
+
+/* drawer */
+function aDrawer(o){$('#adbg').classList.toggle('show',!!o);$('#adw').classList.toggle('show',!!o)}
+function aGo(k){A.tab=k;A.view=null;A.q='';A.pf='all';aDrawer(false);aDraw();$('#amain').scrollTop=0}
+addEventListener('keydown',e=>{if(e.key==='Escape')aDrawer(false)});
+(()=>{const fe=e=>e.target&&e.target.closest&&e.target.closest('input,textarea,select');
+['copy','cut','dragstart','selectstart','contextmenu'].forEach(t=>document.addEventListener&&document.addEventListener(t,e=>{if(!fe(e))e.preventDefault()}))})();
+
+/* shell */
+function aDraw(){
+ const root=$('#aapp');if(root.style.display!=='flex')return;
+ const m=$('#amain'),st=m.scrollTop,n=aCount();
+ const rqn=D.wd.filter(w=>w.status==='pending').length+D.requests.filter(r=>r.status==='open').length+D.parcels.filter(p=>p.stage==='picked_up'&&p.s==='pend').length,apn=D.apps.filter(a=>a.status==='pending').length;
+ $('#ahd').innerHTML=A.logged?`<button class="hmb" onclick="aDrawer(true)" aria-label="Open menu">${ic('menu')}</button>`:'';
+ $('#ahd').innerHTML+=`<div class="brand">${BRAND}<span class="rtag">ADMIN</span></div><div style="flex:1"></div>${A.logged?`<button class="abell" onclick="A.view=null;A.tab='req';aDraw()" aria-label="Needs action">${ic('bell')}${n?`<i>${n}</i>`:''}</button>`:''}`;
+ $('#atabs')&&($('#atabs').style.display='none');
+ const items=[['over','Overview','home',0],['req','Requests','bell',rqn],['parcels','Parcels','box',0],['merch','Merchants','shop',0],['riders','Riders','truck',apn],['msg','Messages','mail',aChatUnread()],['pop','Popups','chat',0]];
+ $('#adw').innerHTML=A.logged?`<div class="dh"><div class="top"><div class="brand">${BRAND}</div><button class="dx" onclick="aDrawer(false)" aria-label="Close menu">${ic('x')}</button></div><div class="dme"><span class="rtag">ADMIN</span>Control panel</div></div><div class="dnav" role="navigation" aria-label="Admin menu"><div class="dsec">MENU</div>${items.map(([k,l,i,c])=>`<button class="di ${A.tab===k&&!A.view?'on':''}" onclick="aGo('${k}')"><span class="dic">${ic(i)}</span><span class="l">${l}</span>${c?`<i class="bdg2">${c}</i>`:''}</button>`).join('')}</div><div class="df"><button class="di" onclick="aOut()"><span class="dic">${ic('out')}</span><span class="l">Sign out</span></button></div>`:'';
+ const view=()=>A.view.t==='p'?aParcelV(A.view.id):A.view.t==='m'?aMerchantV(A.view.id):aRiderV(A.view.id);
+ try{m.innerHTML=!A.logged?aAuth():A.view?view():({over:aOver,req:aReq,parcels:aParcels,merch:aMerch,riders:aRiders,pop:aPopups,msg:aMsgs})[A.tab]()}catch(e){console.error(e);m.innerHTML=(A.view?aBack():'')+'<div class="card"><b>Could not display this page</b><p class="mut">'+esc(e.message)+'</p></div>'}
+ m.scrollTop=st;aChatRefresh();
+}
+$('#aapp').style.display='flex';
+aDraw();startNet();
+</script>
+</body>
+</html>
